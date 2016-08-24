@@ -1,5 +1,6 @@
-# vvps
 *.vvp
+*.vcd
 
 iverilog_compiled
 utilities/iverilog_compiled
+testBenches/iverilog_compiled
