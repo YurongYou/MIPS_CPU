@@ -1,15 +1,16 @@
+`ifndef PIPELINE_DEF
 `include "../define.v"
-
+`endif
 module mux4x1(in_00, in_01, in_10, in_11, slct, out);
 
-	parameter datawidth = 1;
+	parameter data_width = 1;
 
-	input[datawidth-1:0]	in_00;
-	input[datawidth-1:0]	in_01;
-	input[datawidth-1:0]	in_10;
-	input[datawidth-1:0]	in_11;
+	input[data_width-1:0]	in_00;
+	input[data_width-1:0]	in_01;
+	input[data_width-1:0]	in_10;
+	input[data_width-1:0]	in_11;
 	input[1:0]				slct;
-	output[datawidth-1:0]	out;
+	output[data_width-1:0]	out;
 
 	reg out;
 	always @(*) begin

@@ -1,6 +1,9 @@
 *.vvp
 *.vcd
+*.key
 
 iverilog_compiled
 utilities/iverilog_compiled
+utilities/vcd
 testBenches/iverilog_compiled
+testBenches/vcd

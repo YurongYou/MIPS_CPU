@@ -9,7 +9,7 @@ module mux2x1_tb;
 	mux2x1 #(`WIDE) mux_1(in_0, in_1, slct, out);
 
 	initial begin
-		$dumpfile("mux2x1.vcd");
+		$dumpfile("vcd/mux2x1.vcd");
 		$dumpvars;
 		in_0 = 10;
 		in_1 = 15;

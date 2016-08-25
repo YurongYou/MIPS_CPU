@@ -11,7 +11,7 @@ module mux2x1_tb;
 	mux4x1 #(`WIDE) mux_1(in_00, in_01, in_10, in_11, slct, out);
 
 	initial begin
-		$dumpfile("mux4x1.vcd");
+		$dumpfile("vcd/mux4x1.vcd");
 		$dumpvars;
 		in_00 = 2;
 		in_01 = 4;
