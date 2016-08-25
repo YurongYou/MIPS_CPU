@@ -2,20 +2,20 @@
 `include "define.v"
 `endif
 
-module hilo_reg (clk, rst, we_hi, hi_data_in, we_lo, lo_data_in, hi_data_out, lo_data_out);
+module hilo_reg (
 
-	input clk;
-	input rst;
+	input clk,
+	input rst,
 
-	input we_hi;
-	input[`RegDataWidth-1:0] hi_data_in;
+	input we_hi,
+	input[`RegDataWidth-1:0] hi_data_in,
 
-	input we_lo;
-	input[`RegDataWidth-1:0] lo_data_in;
+	input we_lo,
+	input[`RegDataWidth-1:0] lo_data_in,
 
-	output reg[`RegDataWidth-1:0] hi_data_out;
-	output reg[`RegDataWidth-1:0] lo_data_out;
-
+	output reg[`RegDataWidth-1:0] hi_data_out,
+	output reg[`RegDataWidth-1:0] lo_data_out
+);
 
 	// reset all regs
 	always @(posedge clk) begin : proc_reset

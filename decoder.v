@@ -1,18 +1,20 @@
-module decoder (rst, inst, WriteReg, MemOrAlu, WriteMem, ReadMem, AluType, AluOp, AluSrcA, AluSrcB, RegDes, ImmSigned);
+module decoder (
+	input								rst,
+	input[`InstDataWidth-1:0] 			inst,
 
-	input						rst;
-	input[`InstDataWidth-1:0] 	inst;
-	output reg 					WriteReg;
-	output reg					MemOrAlu;
-	output reg					WriteMem;
-	output reg					ReadMem;
-	output reg[1:0]				AluType;
-	output reg[1:0]				AluOp;
-	output reg					AluSrcA;
-	output reg					AluSrcB;
-	output reg					RegDes;
-	output reg 					ImmSigned;
-
+	output reg 							WriteReg,
+	output reg							MemOrAlu,
+	output reg							WriteMem,
+	output reg							ReadMem,
+	output reg[1:0]						AluType,
+	output reg[1:0]						AluOp,
+	output reg							AluSrcA,
+	output reg							AluSrcB,
+	output reg							RegDes,
+	output reg 							ImmSigned,
+	output reg[`ByteSlctWidth-1:0]		byte_slct
+);
+	// TODO
 	wire[`OpcodeBus]			opcode;
 	wire[`FunctBus]				funct;
 

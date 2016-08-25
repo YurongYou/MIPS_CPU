@@ -1,20 +1,20 @@
-module ALU (rst, srcA, srcB, AluType, AluOp, hi_in, lo_in,
-	is_Overflow, data_out, we_hi, we_lo, hi_out, lo_out);
-	input rst;
-	input[`RegDataWidth-1:0] 		srcA;
-	input[`RegDataWidth-1:0] 		srcB;
-	input[1:0] 						AluType;
-	input[1:0] 						AluOp;
-	input[`RegDataWidth-1:0] 		hi_in;
-	input[`RegDataWidth-1:0] 		lo_in;
+module ALU (
+	input rst,
+	input[`RegDataWidth-1:0] 		srcA,
+	input[`RegDataWidth-1:0] 		srcB,
+	input[1:0] 						AluType,
+	input[1:0] 						AluOp,
+	input[`RegDataWidth-1:0] 		hi_in,
+	input[`RegDataWidth-1:0] 		lo_in,
 
-	output reg	   					is_Overflow;
-	output reg[`RegDataWidth-1:0] 	data_out;
-	output 							we_hi;
-	output 							we_lo;
-	output[`RegDataWidth-1:0] 		hi_out;
-	output[`RegDataWidth-1:0] 		lo_out;
-
+	output reg	   					is_Overflow,
+	output reg[`RegDataWidth-1:0] 	data_out,
+	output 							we_hi,
+	output 							we_lo,
+	output[`RegDataWidth-1:0] 		hi_out,
+	output[`RegDataWidth-1:0] 		lo_out
+);
+	// TODO
 	always @(*) begin : proc_alu
 		if(rst == ~`RstEnable) begin
 			case (AluType)
@@ -51,6 +51,7 @@ module ALU (rst, srcA, srcB, AluType, AluOp, hi_in, lo_in,
 
 						default: begin
 						end
+					endcase
 				end
 				`ALU_LOGIC: begin
 					is_Overflow <= ~`Overflow;
@@ -61,16 +62,18 @@ module ALU (rst, srcA, srcB, AluType, AluOp, hi_in, lo_in,
 						`Nor: data_out <= ~(srcA | srcB);
 						default: begin
 						end
+					endcase
 				end
 				`ALU_SHIFT: begin
 					is_Overflow <= ~`Overflow;
 					case (AluOp)
-						`Sll: data_out <= SrcB << SrcA[4:0];
-						`Srl: data_out <= SrcB >> SrcA[4:0];
-						`Sra: data_out <= ( {`RegDataWidth{SrcB[`RegDataWidth-1]}} << (6'd32 - {1'b0, SrcA[4:0]}) )
-						| (SrcB >> SrcA[4:0]);
+						`Sll: data_out <= srcB << srcA[4:0];
+						`Srl: data_out <= srcB >> srcA[4:0];
+						`Sra: data_out <= ( {`RegDataWidth{srcB[`RegDataWidth-1]}} << (6'd32 - {1'b0, srcA[4:0]}) )
+						| (srcB >> srcA[4:0]);
 						default: begin
 						end
+					endcase
 				end
 				default: begin
 				end

@@ -1,25 +1,25 @@
 `ifndef PIPELINE_DEF
 `include "define.v"
 `endif
-module regfile(clk, rst, waddr, wdata, we, re1, raddr_1, rdata_1, re2, raddr_2, rdata_2);
+module regfile(
 
-	input 							clk;
-	input 							rst;
+	input 							clk,
+	input 							rst,
 	// write port
-	input[`RegAddrWidth-1:0]		waddr;
-	input[`RegDataWidth-1:0]		wdata;
-	input							we;
+	input[`RegAddrWidth-1:0]		waddr,
+	input[`RegDataWidth-1:0]		wdata,
+	input							we,
 
 	// read port1
-	input							re1;
-	input[`RegAddrWidth-1:0]		raddr_1;
-	output reg[`RegDataWidth-1:0]	rdata_1;
+	input							re1,
+	input[`RegAddrWidth-1:0]		raddr_1,
+	output reg[`RegDataWidth-1:0]	rdata_1,
 
 	// read port2
-	input							re2;
-	input[`RegAddrWidth-1:0]		raddr_2;
-	output reg[`RegDataWidth-1:0]	rdata_2;
-
+	input							re2,
+	input[`RegAddrWidth-1:0]		raddr_2,
+	output reg[`RegDataWidth-1:0]	rdata_2
+);
 	reg[`RegDataWidth-1:0] regs[`RegNum-1:0];
 
 	// reset all regs

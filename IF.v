@@ -1,13 +1,14 @@
-module IF (clk, rst, is_hold, is_branch, branch_address, ce, pc, pc_plus4);
+module IF (
 
-	input 						clk;
-	input 						rst;
-	input						is_hold;
-	input						is_branch;
-	input[`InstAddrWidth-1:0]	branch_address;
-	output reg					ce;
-	output[`InstAddrWidth-1:0]	pc;				// connect to Instruction ROM
-	output[`InstAddrWidth-1:0]	pc_plus4;		// connect to IF_ID
+	input 						clk,
+	input 						rst,
+	input						is_hold,
+	input						is_branch,
+	input[`InstAddrWidth-1:0]	branch_address,
+	output reg					ce,
+	output[`InstAddrWidth-1:0]	pc,				// connect to Instruction ROM
+	output[`InstAddrWidth-1:0]	pc_plus4		// connect to IF_ID
+);
 
 	wire[`InstAddrWidth-1:0]	next_pc;
 	assign pc_plus4 = pc + 4;
