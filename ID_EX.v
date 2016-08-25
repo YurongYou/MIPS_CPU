@@ -16,6 +16,7 @@ module ID_EX (clk, rst, is_hold, rdata_1_ID, rdata_2_ID, raddr_1_ID, raddr_2_ID,
 	input 							WriteReg_ID;
 	input							MemOrAlu_ID;
 	input							WriteMem_ID;
+	input							ReadMem_ID;
 	input[1:0]						AluType_ID;
 	input[1:0]						AluOp_ID;
 	input							AluSrcA_ID;
@@ -38,6 +39,7 @@ module ID_EX (clk, rst, is_hold, rdata_1_ID, rdata_2_ID, raddr_1_ID, raddr_2_ID,
 	output 							WriteReg_EX;
 	output							MemOrAlu_EX;
 	output							WriteMem_EX;
+	output							ReadMem_EX;
 	output[1:0]						AluType_EX;
 	output[1:0]						AluOp_EX;
 	output							AluSrcA_EX;
@@ -61,6 +63,7 @@ module ID_EX (clk, rst, is_hold, rdata_1_ID, rdata_2_ID, raddr_1_ID, raddr_2_ID,
 	dffe WriteReg_holder(clk, rst, is_hold, WriteMem_ID, WriteMem_EX);
 	dffe MemOrAlu_holder(clk, rst, is_hold, MemOrAlu_ID, MemOrAlu_EX);
 	dffe WriteMem_holder(clk, rst, is_hold, WriteMem_ID, WriteMem_EX);
+	dffe ReadMem_holder(clk, rst, is_hold, ReadMem_ID, ReadMem_EX);
 	dffe #(.data_width(2)) AluType_holder(clk, rst, is_hold, AluType_ID, AluType_EX);
 	dffe #(.data_width(2)) AluOp_holder(clk, rst, is_hold, AluOp_ID, AluOp_EX);
 	dffe AluSrcA_holder(clk, rst, is_hold, AluSrcA_ID, AluSrcA_EX);

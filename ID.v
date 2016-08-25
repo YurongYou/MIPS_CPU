@@ -1,7 +1,7 @@
 `ifndef PIPELINE_DEF
 `include "define.v"
 `endif
-module ID (rst, pc_plus4, inst, reg1_addr, reg2_addr, WriteReg, MemOrAlu, WriteMem, AluType, AluOp, AluSrcA, AluSrcB, RegDes, ImmSigned, rt, rd, imm_signed, imm_unsigned, shamt);
+module ID (rst, pc_plus4, inst, reg1_addr, reg2_addr, WriteReg, MemOrAlu, WriteMem, ReadMem, AluType, AluOp, AluSrcA, AluSrcB, RegDes, ImmSigned, rt, rd, imm_signed, imm_unsigned, shamt);
 
 	input 							rst;
 	input[`InstAddrWidth-1:0] 		pc_plus4;
@@ -13,6 +13,7 @@ module ID (rst, pc_plus4, inst, reg1_addr, reg2_addr, WriteReg, MemOrAlu, WriteM
 	output 							WriteReg;
 	output							MemOrAlu;
 	output							WriteMem;
+	output							ReadMem;
 	output[1:0]						AluType;
 	output[1:0]						AluOp;
 	output							AluSrcA;
@@ -26,7 +27,7 @@ module ID (rst, pc_plus4, inst, reg1_addr, reg2_addr, WriteReg, MemOrAlu, WriteM
 	output [`RegDataWidth-1:0]	  	imm_unsigned;
 	output [`RegDataWidth-1:0]	  	shamt;
 
-	decoder decode(rst, inst, WriteReg, MemOrAlu, WriteMem, AluType, AluOp, AluSrcA, AluSrcB, RegDes, ImmSigned);
+	decoder decode(rst, inst, WriteReg, MemOrAlu, WriteMem, ReadMem, AluType, AluOp, AluSrcA, AluSrcB, RegDes, ImmSigned);
 
 	assign reg1_addr = inst[`RsBus];
 	assign reg2_addr = inst[`RtBus];

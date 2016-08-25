@@ -1,10 +1,11 @@
-module decoder (rst, inst, WriteReg, MemOrAlu, WriteMem, AluType, AluOp, AluSrcA, AluSrcB, RegDes, ImmSigned);
+module decoder (rst, inst, WriteReg, MemOrAlu, WriteMem, ReadMem, AluType, AluOp, AluSrcA, AluSrcB, RegDes, ImmSigned);
 
 	input						rst;
 	input[`InstDataWidth-1:0] 	inst;
 	output reg 					WriteReg;
 	output reg					MemOrAlu;
 	output reg					WriteMem;
+	output reg					ReadMem;
 	output reg[1:0]				AluType;
 	output reg[1:0]				AluOp;
 	output reg					AluSrcA;

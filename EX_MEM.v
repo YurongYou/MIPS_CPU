@@ -1,4 +1,5 @@
-module EX_MEM (clk, rst, is_hold, target_EX, data_out_EX, we_hi_EX, we_lo_EX, hi_EX, lo_EX, rdata_2_EX, WriteReg_EX, MemOrAlu_EX, WriteMem_EX, target_MEM, data_in_MEM, we_hi_MEM, we_lo_MEM, hi_MEM, lo_MEM, rdata_2_MEM, WriteReg_MEM, MemOrAlu_MEM, WriteMem_MEM);
+module EX_MEM (clk, rst, is_hold, target_EX, data_out_EX, we_hi_EX, we_lo_EX, hi_EX, lo_EX, rdata_2_EX, WriteReg_EX, MemOrAlu_EX, WriteMem_EX, ReadMem_EX,
+	target_MEM, data_in_MEM, we_hi_MEM, we_lo_MEM, hi_MEM, lo_MEM, rdata_2_MEM, WriteReg_MEM, MemOrAlu_MEM, WriteMem_MEM, ReadMem_MEM);
 
 	input clk;
 	input rst;
@@ -14,6 +15,7 @@ module EX_MEM (clk, rst, is_hold, target_EX, data_out_EX, we_hi_EX, we_lo_EX, hi
 	input						WriteReg_EX;
 	input						MemOrAlu_EX;
 	input						WriteMem_EX;
+	input						ReadMem_EX;
 
 	output[`RegAddrWidth-1:0]	target_MEM;
 	output[`RegDataWidth-1:0]	data_in_MEM;
@@ -25,6 +27,7 @@ module EX_MEM (clk, rst, is_hold, target_EX, data_out_EX, we_hi_EX, we_lo_EX, hi
 	output						WriteReg_MEM;
 	output						MemOrAlu_MEM;
 	output						WriteMem_MEM;
+	output						ReadMem_MEM;
 
 	dffe #(.data_width(`RegAddrWidth)) target_holder(clk, rst, is_hold, target_EX, target_MEM);
 	dffe #(.data_width(`RegDataWidth)) data_holder(clk, rst, data_out_EX, data_in_MEM);
@@ -36,4 +39,5 @@ module EX_MEM (clk, rst, is_hold, target_EX, data_out_EX, we_hi_EX, we_lo_EX, hi
 	dffe WriteReg_holder(clk, rst, WriteReg_EX, WriteReg_MEM);
 	dffe MemOrAlu_holder(clk, rst, MemOrAlu_EX, MemOrAlu_MEM);
 	dffe WriteMem_holder(clk, rst, WriteMem_EX, WriteMem_MEM);
+	dffe ReadMem_holder(clk, rst, ReadMem_EX, ReadMem_MEM);
 endmodule

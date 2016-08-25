@@ -27,6 +27,7 @@
 `define Rd 				1'b1
 `define Rt 				1'b0
 
+`define MemAddrWidth	32
 `define InstAddrWidth	32
 `define InstDataWidth	32
 `define OpcodeWidth		6
