@@ -12,7 +12,9 @@ module decoder (
 	output reg							AluSrcB,
 	output reg							RegDes,
 	output reg 							ImmSigned,
-	output reg[`ByteSlctWidth-1:0]		byte_slct
+	output reg[`ByteSlctWidth-1:0]		byte_slct,
+	output reg 							is_jal,
+	output reg 							mfhi_lo
 );
 	// TODO
 	wire[`OpcodeBus]			opcode;

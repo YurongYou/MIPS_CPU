@@ -23,13 +23,16 @@ module ID_EX(
 	input								AluSrcB_ID,
 	input								RegDes_ID,
 	input 								ImmSigned_ID,
+	input 								is_jal_ID,
+	input	 							mfhi_lo_ID,
 	input[`RegAddrWidth-1:0] 			rt_ID,
 	input[`RegAddrWidth-1:0] 			rd_ID,
 	input[`RegDataWidth-1:0]	  		imm_signed_ID,
 	input[`RegDataWidth-1:0]	  		imm_unsigned_ID,
-	input[`ByteSlctWidth-1:0]	  			byte_slct_ID,
+	input[`ByteSlctWidth-1:0]	  		byte_slct_ID,
 	input[`RegDataWidth-1:0]			hi_ID,
 	input[`RegDataWidth-1:0]			lo_ID,
+	input[`InstAddrWidth-1:0]			pc_plus4_ID,
 
 	// info output
 	output[`RegDataWidth-1:0]			rdata_1_EX,
@@ -47,13 +50,16 @@ module ID_EX(
 	output								AluSrcB_EX,
 	output								RegDes_EX,
 	output 								ImmSigned_EX,
+	output 								is_jal_EX,
+	output	 							mfhi_lo_EX,
 	output[`RegAddrWidth-1:0] 			rt_EX,
 	output[`RegAddrWidth-1:0] 			rd_EX,
 	output[`RegDataWidth-1:0]	  		imm_signed_EX,
 	output[`RegDataWidth-1:0]	  		imm_unsigned_EX,
 	output[`ByteSlctWidth-1:0]	  		byte_slct_EX,
 	output[`RegDataWidth-1:0]			hi_EX,
-	output[`RegDataWidth-1:0]			lo_EX
+	output[`RegDataWidth-1:0]			lo_EX，
+	output[`InstAddrWidth-1:0]			pc_plus4_EX
 );
 
 	dffe #(.data_width(`RegDataWidth)) 	rdata_1_holder		(clk, rst, is_hold, rdata_1_ID, rdata_1_EX);
@@ -73,12 +79,14 @@ module ID_EX(
 	dffe 								AluSrcB_holder		(clk, rst, is_hold, AluSrcB_ID, AluSrcB_EX);
 	dffe 								RegDes_holder		(clk, rst, is_hold, RegDes_ID, RegDes_EX);
 	dffe 								ImmSigned_holder	(clk, rst, is_hold, ImmSigned_ID, ImmSigned_EX);
+	dffe 								is_jal_holder		(clk, rst, is_hold, is_jal_ID, is_jal_EX);
+	dffe 								mfhi_lo_holder		(clk, rst, is_hold, mfhi_lo_ID, mfhi_lo_EX);
 	dffe #(.data_width(`RegAddrWidth)) 	rt_holder			(clk, rst, is_hold, rt_ID, rt_EX);
 	dffe #(.data_width(`RegAddrWidth)) 	rd_holder			(clk, rst, is_hold, rd_ID, rd_EX);
 	dffe #(.data_width(`RegDataWidth)) 	imm_signed_holder	(clk, rst, is_hold, imm_signed_ID, imm_signed_EX);
 	dffe #(.data_width(`RegDataWidth)) 	imm_unsigned_holder	(clk, rst, is_hold, imm_unsigned_ID, imm_unsigned_EX);
-	dffe #(.data_width(`ByteSlctWidth)) 	byte_slct_holder		(clk, rst, is_hold, byte_slct_ID, byte_slct_EX);
+	dffe #(.data_width(`ByteSlctWidth)) byte_slct_holder	(clk, rst, is_hold, byte_slct_ID, byte_slct_EX);
 	dffe #(.data_width(`RegDataWidth)) 	hi_holder			(clk, rst, is_hold, hi_ID, hi_EX);
 	dffe #(.data_width(`RegDataWidth)) 	lo_holder			(clk, rst, is_hold, lo_ID, lo_EX);
-
+	dffe #(.data_width(`InstAddrWidth)) pc_plus4_holder		(clk, rst, is_hold, pc_plus4_ID, pc_plus4_EX);
 endmodule

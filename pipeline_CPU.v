@@ -30,13 +30,13 @@ module pipeline_CPU (
 	output						mem_we,
 	output						mem_re,
 
-	input[`InstDataWidth-1:0] 	rom_data_in,
+	input[`InstDataWidth-1:0] 	inst_from_rom,
 	output[`InstAddrWidth-1:0] 	rom_addr,
 	output						rom_ce
 	);
 
-	supply1 vcc;
-	supply0 gnd;
+	supply1 					vcc;
+	supply0 					gnd;
 
 	// Forwarding wire
 	wire[1:0]					FWA;
@@ -44,21 +44,23 @@ module pipeline_CPU (
 	wire[1:0]					FWhi;
 	wire[1:0]					FWlo;
 	wire						FWLS;
+	wire[1:0]					FW_br_A;
+	wire[1:0]					FW_br_B;
 
 	// branch control wire
 	wire[`InstAddrWidth-1:0]	branch_address;
 	wire 						is_branch;
+	wire 						is_rst_IF_ID;
 
-	// Hazard Control Port
-	wire is_hold_IF;
-	wire is_hold_IF_ID;
-	wire is_zeros_ID_EX;
+	// Hazard Control wire
+	wire 						is_hold_IF;
+	wire 						is_hold_IF_ID;
+	wire 						is_zeros_ID_EX;
 
-	wire[`InstAddrWidth-1:0] pc_plus4_IF;
-	wire[`InstDataWidth-1:0] inst_IF;
+	wire[`InstAddrWidth-1:0] 	pc_plus4_IF;
 
-	wire[`InstDataWidth-1:0] inst_ID;
-	wire[`InstAddrWidth-1:0] pc_plus4_ID;
+	wire[`InstDataWidth-1:0] 	inst_ID;
+	wire[`InstAddrWidth-1:0] 	pc_plus4_ID;
 
 	IF inst_fetch(.clk      (clk),
 		.rst      (rst),
@@ -70,19 +72,28 @@ module pipeline_CPU (
 		.pc_plus4(pc_plus4_IF)
 	);
 
-	IF_ID if_id_reg(.clk        (clk),
-		.rst        (rst),
+
+	wire IF_ID_controlor;
+	mux2x1 IF_ID_control(
+		.in_0(rst),
+		.in_1(vcc),
+		.slct(is_rst_IF_ID),
+		.out(IF_ID_controlor)
+	);
+
+	IF_ID if_id_reg(
+		.clk        (clk),
+		.rst        (IF_ID_controlor),
 		.is_hold    (is_hold_IF_ID),
 		.pc_plus4_IF(pc_plus4_IF),
-		.inst_IF    (rom_data_in),
+		.inst_IF    (inst_from_rom),
 		.pc_plus4_ID(pc_plus4_ID),
 		.inst_ID    (inst_ID)
 	);
 
-	// wire						re1;
+
 	wire[`RegAddrWidth-1:0]		raddr_1_ID;
 	wire[`RegDataWidth-1:0]		rdata_1_ID;
-	// wire						re2;
 	wire[`RegAddrWidth-1:0]		raddr_2_ID;
 	wire[`RegDataWidth-1:0]		rdata_2_ID;
 	wire[`RegDataWidth-1:0]		shamt_ID;
@@ -97,6 +108,8 @@ module pipeline_CPU (
 	wire						AluSrcB_ID;
 	wire						RegDes_ID;
 	wire 						ImmSigned_ID;
+	wire 						is_jal_ID;
+	wire 						mfhi_lo_ID;
 	wire[`RegAddrWidth-1:0] 	rt_ID;
 	wire[`RegAddrWidth-1:0] 	rd_ID;
 	wire[`RegDataWidth-1:0]	  	imm_signed_ID;
@@ -125,7 +138,9 @@ module pipeline_CPU (
 		.imm_signed(imm_signed_ID),
 		.imm_unsigned(imm_unsigned_ID),
 		.shamt(shamt_ID),
-		.byte_slct(byte_slct_ID)
+		.byte_slct(byte_slct_ID),
+		.is_jal(is_jal_ID),
+		.mfhi_lo(mfhi_lo_ID)
 	);
 
 
@@ -133,16 +148,16 @@ module pipeline_CPU (
 	wire[`RegDataWidth-1:0]		reg_write_data;
 	wire						reg_we;
 
-	wire we_hi;
-	wire[`RegDataWidth-1:0] hi_data_in;
+	wire 						we_hi;
+	wire[`RegDataWidth-1:0] 	hi_data_in;
 
-	wire we_lo;
-	wire[`RegDataWidth-1:0] lo_data_in;
+	wire 						we_lo;
+	wire[`RegDataWidth-1:0] 	lo_data_in;
 
-	wire[`RegDataWidth-1:0] hi_data_out_ID;
-	wire[`RegDataWidth-1:0] lo_data_out_ID;
-	wire[`RegDataWidth-1:0] hi_data_to_EX;
-	wire[`RegDataWidth-1:0] lo_data_to_EX;
+	wire[`RegDataWidth-1:0] 	hi_data_out_ID;
+	wire[`RegDataWidth-1:0] 	lo_data_out_ID;
+	wire[`RegDataWidth-1:0] 	hi_data_to_EX;
+	wire[`RegDataWidth-1:0] 	lo_data_to_EX;
 
 	// force read regfile
 	regfile regs(
@@ -180,6 +195,8 @@ module pipeline_CPU (
 	wire						AluSrcB_EX;
 	wire						RegDes_EX;
 	wire 						ImmSigned_EX;
+	wire 						is_jal_EX;
+	wire 						mfhi_lo_EX;
 	wire[`RegAddrWidth-1:0] 	rt_EX;
 	wire[`RegAddrWidth-1:0] 	rd_EX;
 	wire[`RegDataWidth-1:0]	  	imm_signed_EX;
@@ -190,6 +207,7 @@ module pipeline_CPU (
 	wire[`RegAddrWidth-1:0]		raddr_1_EX;
 	wire[`RegAddrWidth-1:0]		raddr_2_EX;
 	wire[`RegDataWidth-1:0]		shamt_EX;
+	wire[`InstAddrWidth-1:0] 	pc_plus4_EX;
 
 	wire ID_EX_controlor;
 	mux2x1 ID_EX_control(
@@ -218,6 +236,8 @@ module pipeline_CPU (
 		.AluSrcB_ID(AluSrcB_ID),
 		.RegDes_ID(RegDes_ID),
 		.ImmSigned_ID(ImmSigned_ID),
+		.is_jal_ID   (is_jal_ID),
+		.mfhi_lo_ID(mfhi_lo_ID)
 		.rt_ID(rt_ID),
 		.rd_ID(rd_ID),
 		.imm_signed_ID(imm_signed_ID),
@@ -225,6 +245,7 @@ module pipeline_CPU (
 		.byte_slct_ID(byte_slct_ID),
 		.hi_ID(hi_data_out_ID),
 		.lo_ID(lo_data_out_ID),
+		.pc_plus4_ID(pc_plus4_ID),
 
 		.rdata_1_EX(rdata_1_EX),
 		.rdata_2_EX(rdata_2_EX),
@@ -241,13 +262,16 @@ module pipeline_CPU (
 		.AluSrcB_EX(AluSrcB_EX),
 		.RegDes_EX(RegDes_EX),
 		.ImmSigned_EX(ImmSigned_EX),
+		.is_jal_EX(is_jal_EX),
+		.mfhi_lo_EX(mfhi_lo_EX),
 		.rt_EX(rt_EX),
 		.rd_EX(rd_EX),
 		.imm_signed_EX(imm_signed_EX),
 		.imm_unsigned_EX(imm_unsigned_EX),
 		.byte_slct_EX(byte_slct_EX),
 		.hi_EX(hi_data_to_EX),
-		.lo_EX(lo_data_to_EX)
+		.lo_EX(lo_data_to_EX),
+		.pc_plus4_EX(pc_plus4_EX)
 	);
 
 	wire[`RegAddrWidth-1:0]		target_EX;
@@ -274,6 +298,8 @@ module pipeline_CPU (
 		.AluSrcB_EX(AluSrcB_EX),
 		.RegDes_EX(RegDes_EX),
 		.ImmSigned_EX(ImmSigned_EX),
+		.is_jal_EX   (is_jal_EX),
+		.mfhi_lo_EX  (mfhi_lo_EX),
 		.rt_EX(rt_EX),
 		.rd_EX(rd_EX),
 		.imm_signed_EX(imm_signed_EX),
@@ -282,6 +308,7 @@ module pipeline_CPU (
 		.lo(lo_data_to_EX),
 		.rdata_1(rdata_1_EX),
 		.rdata_2(rdata_2_EX),
+		.pc_plus4_EX(pc_plus4_EX),
 		// forwarding data in
 		.data_out_MEM(data_from_ALU_MEM),
 		.data_out_WB(reg_write_data),
@@ -368,10 +395,10 @@ module pipeline_CPU (
 		.data_to_reg(MEM_data_MEM)
 	);
 
-	assign mem_addr 		= data_from_ALU_MEM;
-	assign mem_byte_slct 	= byte_slct_MEM;
-	assign mem_re 			= ReadMem_MEM;
-	assign mem_we 			= WriteMem_MEM;
+	assign mem_addr 		 = 	data_from_ALU_MEM;
+	assign mem_byte_slct 	 = 	byte_slct_MEM;
+	assign mem_re 			 = 	ReadMem_MEM;
+	assign mem_we 			 = 	WriteMem_MEM;
 
 	wire[`RegDataWidth-1:0]		ALU_data_WB;
 	wire[`RegDataWidth-1:0]		MEM_data_WB;
@@ -415,14 +442,21 @@ module pipeline_CPU (
 		.out(reg_write_data)
 	);
 
-	ForwardControl forwarding(
+	// Control center
+	ForwardControl forwarding_handler(
+		.rst(rst),
+		.reg_data_1_addr_ID(raddr_1_ID),
+		.reg_data_2_addr_ID(raddr_2_ID),
 
 		.reg_data_1_addr_EX(raddr_1_EX),
 		.reg_data_2_addr_EX(raddr_2_EX),
+		.target_EX(target_EX),
+		.WriteReg_EX(WriteReg_EX),
 
 		.reg_data_2_addr_MEM(raddr_2_MEM),
 		.target_MEM(target_MEM),
 		.WriteReg_MEM(WriteReg_MEM),
+		.MemOrAlu_MEM(MemOrAlu_MEM),
 		.we_hi_MEM(we_hi_MEM),
 		.we_lo_MEM(we_lo_MEM),
 
@@ -435,27 +469,27 @@ module pipeline_CPU (
 		.FWB(FWB),
 		.FWhi(FWhi),
 		.FWlo(FWlo),
-		.FWLS(FWLS)
+		.FWLS(FWLS),
+		.FW_br_A(FW_br_A),
+		.FW_br_B(FW_br_B)
 	);
-
-	BranchControl branch(
+	BranchControl branch_handler(
 		.rst(rst),
 		.pc_plus4_ID(pc_plus4_ID),
 		.inst_ID(inst_ID),
-		.raddr_1_ID(raddr_1_ID),
-		.rdata_1_ID(rdata_1_ID),
-		.raddr_2_ID(raddr_2_ID),
-		.rdata_2_ID(rdata_2_ID),
-		.target_EX(target_EX),
-		.data_out_EX(data_out_EX),
-		.target_MEM(target_MEM),
-		.data_from_ALU_MEM(data_from_ALU_MEM),
-		.target_WB(reg_write_addr),
-		.WB_data(reg_write_data),
-		.branch_address(branch_address),
-		.is_branch(is_branch)
-	);
 
+		.FW_br_A(FW_br_A),
+		.FW_br_B(FW_br_A),
+		.rdata_1_ID(rdata_1_ID),
+		.rdata_2_ID(rdata_2_ID),
+		.data_out_EX(data_out_EX),
+		.data_from_ALU_MEM(data_from_ALU_MEM),
+		.MEM_data_MEM(MEM_data_MEM),
+
+		.branch_address(branch_address),
+		.is_branch(is_branch),
+		.is_rst_IF_ID(is_rst_IF_ID)
+	);
 	HazardControl hazard_handler(
 		.rst(rst),
 		.ReadMem_EX(ReadMem_EX),

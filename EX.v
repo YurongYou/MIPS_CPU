@@ -8,6 +8,8 @@ module EX(
 	input							AluSrcB_EX,
 	input							RegDes_EX,
 	input 							ImmSigned_EX,
+	input							is_jal_EX,
+	input 							mfhi_lo_EX,
 	input[`RegAddrWidth-1:0] 		rt_EX,
 	input[`RegAddrWidth-1:0] 		rd_EX,
 	input[`RegDataWidth-1:0]	  	imm_signed_EX,
@@ -17,6 +19,7 @@ module EX(
 	input[`RegDataWidth-1:0]		lo,
 	input[`RegDataWidth-1:0]		rdata_1,
 	input[`RegDataWidth-1:0]		rdata_2,
+	input[`InstAddrWidth-1:0]	 	pc_plus4_EX,
 	// forwarded data
 	input[`RegDataWidth-1:0]		data_out_MEM,
 	input[`RegDataWidth-1:0]		data_out_WB,
@@ -103,37 +106,57 @@ module EX(
 		.out(srcB)
 	);
 
-	mux2x1 #(.data_width(`RegAddrWidth)) target_mux(
+	wire[`RegAddrWidth-1:0]		target_temp;
+	reg[`RegAddrWidth-1:0]		constant_31;
+	assign constant_31 = 31;
+
+	mux2x1 #(.data_width(`RegAddrWidth)) target_temp_mux(
 		.in_0(rt_EX),
 		.in_1(rd_EX),
 		.slct(RegDes_EX),
+		.out(target_temp)
+	);
+
+	mux2x1 #(.data_width(`RegAddrWidth)) target_mux(
+		.in_0(target_temp),
+		.in_1(constant_31),
+		.slct(is_jal_EX),
 		.out(target_EX)
 	);
 
+	wire[`RegDataWidth-1:0]	temp_data_out_EX;
 	ALU arith_logic_unit(
 		.rst(rst),
 		.srcA(srcA),
 		.srcB(srcB),
 		.AluType(AluType_EX),
 		.AluOp(AluOp_EX),
+		.mfhi_lo(mfhi_lo_EX),
 		.hi_in(hi_in),
 		.lo_in(lo_in),
 		.is_Overflow(is_Overflow),
-		.data_out(data_out_EX),
+		.data_out(temp_data_out_EX),
 		.we_hi(we_hi),
 		.we_lo(we_lo),
 		.hi_out(hi_temp),
 		.lo_out(lo_temp)
 	);
 
-	mux2x1 #(.data_width(`RegDataWidth)) hi_mix(
+	mux2x1 #(.data_width(`RegDataWidth)) data_out_mix(
+		.in_0(temp_data_out_EX),
+		.in_1(pc_plus4_EX),
+		.slct(is_jal_EX),
+		.out(data_out_EX)
+	);
+
+	mux2x1 #(.data_width(`RegDataWidth)) hi_mux(
 		.in_0(hi),
 		.in_1(hi_temp),
 		.slct(we_hi),
 		.out(hi_EX)
 	);
 
-	mux2x1 #(.data_width(`RegDataWidth)) lo_mix(
+	mux2x1 #(.data_width(`RegDataWidth)) lo_mux(
 		.in_0(lo),
 		.in_1(lo_temp),
 		.slct(we_lo),

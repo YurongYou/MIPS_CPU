@@ -82,6 +82,10 @@
 `define Sll				2'b00
 `define Srl				2'b01
 `define Sra				2'b11
+`define mfhi_lo			2'b10
+
+`define mfhi			1'b0;
+`define mflo			1'b1;
 
 // MIPS opcode
 `define mips_R			6'h0
@@ -113,8 +117,10 @@
 `define mips_srlv 		6'd6
 `define mips_srav 		6'd7
 `define mips_jr 		6'd8
+
 `define mips_mfhi 		6'd16
 `define mips_mflo 		6'd18
+
 `define mips_mult 		6'd24
 `define mips_multu 		6'd25
 `define mips_div 		6'd26
@@ -135,4 +141,13 @@
 `define FWOrigin		2'b00
 `define FWMem			2'b01
 `define FWWB			2'b10
+
+`define FW_LS_Origin	1'b0
+`define FW_LS_WB		1'b1
+
+`define FW_br_Origin	2'b00
+`define FW_br_EX_ALU	2'b01
+`define FW_br_MEM_MEM	2'b10
+`define FW_br_MEM_ALU	2'b11
+
 `endif

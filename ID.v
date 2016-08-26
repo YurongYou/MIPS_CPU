@@ -20,17 +20,20 @@ module ID (
 	output							AluSrcB,
 	output							RegDes,
 	output 							ImmSigned,
+	output 							is_jal,
 
 	output[`RegAddrWidth-1:0] 		rt,
 	output[`RegAddrWidth-1:0] 		rd,
 	output[`RegDataWidth-1:0]	  	imm_signed,
 	output[`RegDataWidth-1:0]	  	imm_unsigned,
 	output[`RegDataWidth-1:0]	  	shamt,
-	output[`ByteSlctWidth-1:0]		byte_slct
+	output[`ByteSlctWidth-1:0]		byte_slct,
+	output 							mfhi_lo
 );
 	decoder decode(
 		.rst(rst),
 		.inst(inst),
+
 		.WriteReg(WriteReg),
 		.MemOrAlu(MemOrAlu),
 		.WriteMem(WriteMem),
@@ -41,7 +44,9 @@ module ID (
 		.AluSrcB(AluSrcB),
 		.RegDes(RegDes),
 		.ImmSigned(ImmSigned),
-		.byte_slct(byte_slct)
+		.byte_slct(byte_slct),
+		.is_jal(is_jal),
+		.mfhi_lo(mfhi_lo),
 	);
 
 	assign reg1_addr = inst[`RsBus];
