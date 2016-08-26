@@ -89,10 +89,13 @@
 
 // MIPS opcode
 `define mips_R			6'h0
+
+`define mips_jr 		6'd8
 `define mips_j			6'h2
 `define mips_jal		6'h3
 `define mips_beq		6'h4
 `define mips_bne		6'h5
+
 `define mips_addi		6'h8
 `define mips_addiu		6'h9
 `define mips_slti		6'ha
@@ -116,7 +119,6 @@
 `define mips_sllv 		6'd4
 `define mips_srlv 		6'd6
 `define mips_srav 		6'd7
-`define mips_jr 		6'd8
 
 `define mips_mfhi 		6'd16
 `define mips_mflo 		6'd18

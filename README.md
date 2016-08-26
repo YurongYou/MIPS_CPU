@@ -4,8 +4,8 @@ Implement a CPU which supports a subset of MIPS operations using Verilog HDL on 
 ## TODOs
 1. finish construction
 	* `decoder.v`
-	* `BranchControl.v`
-	* `HazardControl.v`
+	* ~~`BranchControl.v`~~
+	* ~~`HazardControl.v`~~
 	* `RM_ctrl.v`
 	* `WM_ctrl.v`
 2. fully review the pipeline code
