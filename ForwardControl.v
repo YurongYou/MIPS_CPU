@@ -1,3 +1,4 @@
+// `include "define.v"
 module ForwardControl (
 	input						rst,
 	input[`RegAddrWidth-1:0]	reg_data_1_addr_ID,
