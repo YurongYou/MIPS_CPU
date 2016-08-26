@@ -14,7 +14,6 @@ module decoder (
 	output reg 							ImmSigned,
 	output 								is_jal
 );
-	// TODO
 	wire[`OpcodeBus]			opcode;
 	wire[`FunctBus]				funct;
 
@@ -383,92 +382,89 @@ module decoder (
 					MemOrAlu	= `Mem;
 					ReadMem  	= `ReadEnable;
 					AluType		= `ALU_ADD_SUB;
-					AluOp		= `Add;
+					AluOp		= `Addu;
 					AluSrcA		= `Rs;
 					AluSrcB		= `Imm;
 					RegDes		= `Rt;
-					ImmSigned	= `ImmSign; 4'b1000;
+					ImmSigned	= `ImmSign;
 				end
 				`mips_lh: begin
 					WriteReg 	= `WriteEnable;
 					WriteMem 	= ~`WriteEnable;
 					MemOrAlu	= `Mem;
 					ReadMem  	= `ReadEnable;
-					AluType		=
-					AluOp		=
-					AluSrcA		=
-					AluSrcB		=
-					RegDes		=
-					ImmSigned	=
+					AluType		= `ALU_ADD_SUB;
+					AluOp		= `Addu;
+					AluSrcA		= `Rs;
+					AluSrcB		= `Imm;
+					RegDes		= `Rt;
+					ImmSigned	= `ImmSign;
 				end
 				`mips_lw: begin
 					WriteReg 	= `WriteEnable;
 					WriteMem 	= ~`WriteEnable;
 					MemOrAlu	= `Mem;
 					ReadMem  	= `ReadEnable;
-					AluType		=
-					AluOp		=
-					AluSrcA		=
-					AluSrcB		=
-					RegDes		=
-					ImmSigned	=
+					AluType		= `ALU_ADD_SUB;
+					AluOp		= `Addu;
+					AluSrcA		= `Rs;
+					AluSrcB		= `Imm;
+					RegDes		= `Rt;
+					ImmSigned	= `ImmSign;
 				end
 				`mips_lbu: begin
 					WriteReg 	= `WriteEnable;
 					WriteMem 	= ~`WriteEnable;
 					MemOrAlu	= `Mem;
 					ReadMem  	= `ReadEnable;
-					AluType		=
-					AluOp		=
-					AluSrcA		=
-					AluSrcB		=
-					RegDes		=
-					ImmSigned	=
+					AluType		= `ALU_ADD_SUB;
+					AluOp		= `Addu;
+					AluSrcA		= `Rs;
+					AluSrcB		= `Imm;
+					RegDes		= `Rt;
+					ImmSigned	= `ImmSign;
 				end
 				`mips_lhu: begin
 					WriteReg 	= `WriteEnable;
 					WriteMem 	= ~`WriteEnable;
 					MemOrAlu	= `Mem;
 					ReadMem  	= `ReadEnable;
-					AluType		=
-					AluOp		=
-					AluSrcA		=
-					AluSrcB		=
-					RegDes		=
-					ImmSigned	=
+					AluType		= `ALU_ADD_SUB;
+					AluOp		= `Addu;
+					AluSrcA		= `Rs;
+					AluSrcB		= `Imm;
+					RegDes		= `Rt;
+					ImmSigned	= `ImmSign;
 				end
 				`mips_sb: begin
 					WriteReg 	= ~`WriteEnable;
 					WriteMem 	= `WriteEnable;
 					ReadMem  	= ~`ReadEnable;
-					AluType		=
-					AluOp		=
-					AluSrcA		=
-					AluSrcB		=
-					RegDes		=
-					ImmSigned	=
+					AluType		= `ALU_ADD_SUB;
+					AluOp		= `Addu;
+					AluSrcA		= `Rs;
+					AluSrcB		= `Imm;
+					ImmSigned	= `ImmSign;
 				end
 				`mips_sh: begin
 					WriteReg 	= ~`WriteEnable;
 					WriteMem 	= `WriteEnable;
 					ReadMem  	= ~`ReadEnable;
-					AluType		=
-					AluOp		=
-					AluSrcA		=
-					AluSrcB		=
-					RegDes		=
-					ImmSigned	=
+					AluType		= `ALU_ADD_SUB;
+					AluOp		= `Addu;
+					AluSrcA		= `Rs;
+					AluSrcB		= `Imm;
+					ImmSigned	= `ImmSign;
 				end
 				`mips_sw: begin
 					WriteReg 	= ~`WriteEnable;
 					WriteMem 	= `WriteEnable;
 					ReadMem  	= ~`ReadEnable;
-					AluType		=
-					AluOp		=
-					AluSrcA		=
-					AluSrcB		=
-					RegDes		=
-					ImmSigned	=
+					AluType		= `ALU_ADD_SUB;
+					AluOp		= `Addu;
+					AluSrcA		= `Rs;
+					AluSrcB		= `Imm;
+					ImmSigned	= `ImmSign;
 				end
 				default: begin
 				end
