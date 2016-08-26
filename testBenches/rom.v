@@ -1,5 +1,4 @@
 // `include "../define.v"
-`define InstMemNum	2048
 module rom (
 	input						rst,
 	input 						ce,
@@ -7,12 +6,15 @@ module rom (
 
 	output reg[`InstDataWidth-1:0]	inst
 );
-	reg[`InstDataWidth-1:0]		rom_data[`InstMemNum-1:0];
+
+	parameter InstMemNum 	 = 2048;
+
+	reg[`InstDataWidth-1:0]		rom_data[InstMemNum-1:0];
 
 	always @(*) begin : proc_reset
 		integer i;
 		if (rst == `RstEnable) begin
-			for (i = 0; i < `InstMemNum; i = i + 1)
+			for (i = 0; i < InstMemNum; i = i + 1)
 				rom_data[i] <= `ZeroWord;
 		end
 	end

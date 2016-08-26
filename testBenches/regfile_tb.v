@@ -25,7 +25,7 @@ module regfile_tb;
 		integer i;
 		$dumpfile("vcd/regfile_tb.vcd");
 		$dumpvars;
-		$readmemb("testData/regdata.data", regs.regs);
+		$readmemb("testData/data.data", regs.regs);
 		rst = ~`RstEnable;
 		re1 = `ReadEnable;
 		for (i = 0; i < `RegNum; i = i + 1) begin
