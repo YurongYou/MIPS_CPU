@@ -1,6 +1,3 @@
-`ifndef PIPELINE_DEF
-`include "define.v"
-`endif
 module ID (
 
 	input 							rst,

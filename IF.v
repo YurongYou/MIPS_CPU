@@ -1,5 +1,4 @@
 module IF (
-
 	input 						clk,
 	input 						rst,
 	input						is_hold,
@@ -14,7 +13,12 @@ module IF (
 	assign pc_plus4 = pc + 4;
 
 	dffe #(.data_width(`InstAddrWidth), .initial_value(-4)) pc_reg(clk, rst, is_hold, next_pc, pc);
-	mux2x1 #(.data_width(`InstAddrWidth)) mux(.in_0(pc_plus4), .in_1(branch_address), .slct(is_branch), .out(next_pc));
+	mux2x1 #(.data_width(`InstAddrWidth)) mux(
+		.in_0(pc_plus4),
+		.in_1(branch_address),
+		.slct(is_branch),
+		.out(next_pc)
+	);
 
 	always @(posedge clk) begin : proc_ceResst
 		if (rst == `RstEnable)

@@ -86,20 +86,15 @@ module ALU (
 						`Div: begin
 							if (srcA[`RegDataWidth-1] ^ srcB[`RegDataWidth-1]) begin
 								lo_out <= ~positive_div_temp + 1;
-								if (srcA[`RegDataWidth-1] == 1'b0)
-									// positive / negitive
-									hi_out <= positive_quo_temp;
-								else
-									// negitive / positive
-									hi_out <= srcB - positive_quo_temp;
 							end
 							else begin
 								lo_out <= positive_div_temp;
-								if (srcA[`RegDataWidth-1] == 1'b0)
-									hi_out <= positive_quo_temp;
-								else
-									hi_out <= positive_srcB - positive_quo_temp;
 							end
+
+							if (srcA[`RegDataWidth-1] == 1'b0)
+								hi_out <= positive_quo_temp;
+							else
+								hi_out <= ~positive_quo_temp + 1;
 						end
 						`Divu: begin
 							lo_out <= divu_temp;
@@ -136,6 +131,9 @@ module ALU (
 					endcase
 				end
 				`ALU_COMP: begin
+					is_Overflow <= ~`Overflow;
+					we_hi <= ~`WriteEnable;
+					we_lo <= ~`WriteEnable;
 					case (AluOp)
 						`Slt : begin
 							if (srcA[`RegDataWidth-1] == 1'b1) begin
@@ -163,6 +161,9 @@ module ALU (
 					endcase
 				end
 				`ALU_OTHER: begin
+					is_Overflow <= ~`Overflow;
+					we_hi <= ~`WriteEnable;
+					we_lo <= ~`WriteEnable;
 					case (AluOp)
 						`Mfhi: data_out <= hi_in;
 						`Mflo: data_out <= lo_in;

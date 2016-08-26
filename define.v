@@ -29,6 +29,7 @@
 
 `define ByteSlctWidth	4
 `define MemAddrWidth	32
+`define MemDataWidth	32
 `define InstAddrWidth	32
 `define InstDataWidth	32
 `define OpcodeWidth		6
