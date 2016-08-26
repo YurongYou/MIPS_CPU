@@ -133,12 +133,12 @@ module pipeline_CPU (
 		.AluSrcB(AluSrcB_ID),
 		.RegDes(RegDes_ID),
 		.ImmSigned(ImmSigned_ID),
+		.opcode(opcode_ID),
 		.rt(rt_ID),
 		.rd(rd_ID),
 		.imm_signed(imm_signed_ID),
 		.imm_unsigned(imm_unsigned_ID),
 		.shamt(shamt_ID),
-		.opcode(opcode_ID),
 		.is_jal(is_jal_ID)
 	);
 
