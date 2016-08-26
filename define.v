@@ -51,6 +51,8 @@
 `define RegNum			32
 `define RegAddrWidth	5
 `define RegDataWidth	32
+`define ByteBus			7:0
+`define HalfWordBus		15:0
 
 `define ALUTypeWidth	3
 `define ALUOpWidth		2

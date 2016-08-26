@@ -155,7 +155,7 @@ module ALU (
 								end
 							end
 						end
-						`Slyu: begin
+						`Sltu: begin
 							data_out <= (srcA < srcB) ? 1 : 0;
 						end
 						default : begin

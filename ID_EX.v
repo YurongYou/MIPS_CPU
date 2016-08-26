@@ -56,7 +56,7 @@ module ID_EX(
 	output[`RegDataWidth-1:0]	  		imm_unsigned_EX,
 	output[`OpcodeWidth-1:0]	  		opcode_EX,
 	output[`RegDataWidth-1:0]			hi_EX,
-	output[`RegDataWidth-1:0]			lo_EX，
+	output[`RegDataWidth-1:0]			lo_EX,
 	output[`InstAddrWidth-1:0]			pc_plus4_EX
 );
 

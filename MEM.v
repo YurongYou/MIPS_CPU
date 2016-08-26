@@ -1,18 +1,19 @@
 module MEM (
 	input rst,
 
-	input						FWLS,
-	input[`RegDataWidth-1:0]	reg_data_2,
-	input[`RegDataWidth-1:0]	WB_data,
-	input[`RegDataWidth-1:0]	raw_mem_data,
-	input 						ReadMem,
-	input						WriteMem,
+	input							FWLS,
+	input[`RegDataWidth-1:0]		reg_data_2,
+	input[`RegDataWidth-1:0]		WB_data,
+	input[`RegDataWidth-1:0]		raw_mem_data,
+	input 							ReadMem,
+	input							WriteMem,
 
-	input[`RegDataWidth-1:0]	mem_addr,
-	input[`OpcodeWidth-1:0]		opcode,
+	input[`RegDataWidth-1:0]		mem_addr,
+	input[`OpcodeWidth-1:0]			opcode,
 
-	output[`RegDataWidth-1:0]	data_to_write_mem,
-	output[`RegDataWidth-1:0]	data_to_reg
+	output[`RegDataWidth-1:0]		data_to_write_mem,
+	output[`RegDataWidth-1:0]		data_to_reg,
+	output reg[`ByteSlctWidth-1:0]	byte_slct
 );
 
 	wire[`RegDataWidth-1:0]		raw_reg_data;
@@ -21,8 +22,6 @@ module MEM (
 
 	assign byte_slct_b = `ByteSlctWidth'b1000 >> mem_addr[1:0];
 	assign byte_slct_h = `ByteSlctWidth'b1100 >> mem_addr[1:0];
-
-	reg[`ByteSlctWidth-1:0]		byte_slct;
 
 	always @(*) begin : proc_byte_slct_gen
 		case (opcode)
@@ -48,14 +47,17 @@ module MEM (
 	WM_ctrl write_control(
 		.rst(rst),
 		.raw_reg_data(raw_reg_data),
-		.byte_slct_MEM(byte_slct),
+		.opcode(opcode),
+
 		.data_to_mem(data_to_write_mem)
 	);
 
 	RM_ctrl read_control(
 		.rst(rst),
 		.byte_slct(byte_slct),
+		.opcode(opcode),
 		.raw_mem_data(raw_mem_data),
+
 		.data_to_reg(data_to_reg)
 	);
 endmodule

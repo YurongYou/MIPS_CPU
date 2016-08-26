@@ -1,24 +1,24 @@
-// `include "define.v"
-// `include "regfile.v"
-// `include "hilo_reg.v"
-// `include "BranchControl.v"
-// `include "HazardControl.v"
-// `include "ForwardControl.v"
-// `include "IF.v"
-// `include "IF_ID.v"
-// `include "ID.v"
-// `include "ID_EX.v"
-// `include "EX.v"
-// `include "ALU.v"
-// `include "decoder.v"
-// `include "EX_MEM.v"
-// `include "MEM.v"
-// `include "RM_ctrl.v"
-// `include "WM_ctrl.v"
-// `include "MEM_WB.v"
-// `include "utilities/dffe.v"
-// `include "utilities/mux2x1.v"
-// `include "utilities/mux4x1.v"
+`include "define.v"
+`include "regfile.v"
+`include "hilo_reg.v"
+`include "BranchControl.v"
+`include "HazardControl.v"
+`include "ForwardControl.v"
+`include "IF.v"
+`include "IF_ID.v"
+`include "ID.v"
+`include "ID_EX.v"
+`include "EX.v"
+`include "ALU.v"
+`include "decoder.v"
+`include "EX_MEM.v"
+`include "MEM.v"
+`include "RM_ctrl.v"
+`include "WM_ctrl.v"
+`include "MEM_WB.v"
+`include "utilities/dffe.v"
+`include "utilities/mux2x1.v"
+`include "utilities/mux4x1.v"
 module pipeline_CPU (
 	input 						clk,
 	input 						rst,
@@ -387,11 +387,11 @@ module pipeline_CPU (
 		.opcode(opcode_MEM),
 
 		.data_to_write_mem(data_to_write_mem),
-		.data_to_reg(MEM_data_MEM)
+		.data_to_reg(MEM_data_MEM),
+		.byte_slct(mem_byte_slct)
 	);
 
 	assign mem_addr 		 = 	data_from_ALU_MEM;
-	assign mem_byte_slct 	 = 	byte_slct_MEM;
 	assign mem_re 			 = 	ReadMem_MEM;
 	assign mem_we 			 = 	WriteMem_MEM;
 

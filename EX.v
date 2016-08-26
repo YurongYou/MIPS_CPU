@@ -106,7 +106,7 @@ module EX(
 	);
 
 	wire[`RegAddrWidth-1:0]		target_temp;
-	reg[`RegAddrWidth-1:0]		constant_31;
+	wire[`RegAddrWidth-1:0]		constant_31;
 	assign constant_31 = 31;
 
 	mux2x1 #(.data_width(`RegAddrWidth)) target_temp_mux(
