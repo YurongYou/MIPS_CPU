@@ -14,8 +14,8 @@ module ID (
 	output							MemOrAlu,
 	output							WriteMem,
 	output							ReadMem,
-	output[1:0]						AluType,
-	output[1:0]						AluOp,
+	output[`ALUTypeWidth-1:0]		AluType,
+	output[`ALUOpWidth-1:0]			AluOp,
 	output							AluSrcA,
 	output							AluSrcB,
 	output							RegDes,
@@ -27,8 +27,7 @@ module ID (
 	output[`RegDataWidth-1:0]	  	imm_signed,
 	output[`RegDataWidth-1:0]	  	imm_unsigned,
 	output[`RegDataWidth-1:0]	  	shamt,
-	output[`ByteSlctWidth-1:0]		byte_slct,
-	output 							mfhi_lo
+	output[`OpcodeWidth-1:0]		opcode
 );
 	decoder decode(
 		.rst(rst),
@@ -44,9 +43,7 @@ module ID (
 		.AluSrcB(AluSrcB),
 		.RegDes(RegDes),
 		.ImmSigned(ImmSigned),
-		.byte_slct(byte_slct),
-		.is_jal(is_jal),
-		.mfhi_lo(mfhi_lo),
+		.is_jal(is_jal)
 	);
 
 	assign reg1_addr = inst[`RsBus];
@@ -57,4 +54,5 @@ module ID (
 	assign imm_signed = {{16{inst[15]}}, inst[`ImmBus]};
 	assign imm_unsigned = {16'b0, inst[`ImmBus]};
 	assign shamt = {27'b0, inst[`SaBus]};
+	assign opcode = inst[`OpcodeBus];
 endmodule

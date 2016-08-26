@@ -52,13 +52,15 @@
 `define RegAddrWidth	5
 `define RegDataWidth	32
 
-
+`define ALUTypeWidth	3
+`define ALUOpWidth		2
 // alu Type
-`define ALU_ADD_SUB		2'b00
-`define ALU_MUL_DIV		2'b01
-`define ALU_LOGIC		2'b10
-`define ALU_SHIFT		2'b11
-
+`define ALU_ADD_SUB		3'b000
+`define ALU_MUL_DIV		3'b001
+`define ALU_LOGIC		3'b010
+`define ALU_SHIFT		3'b011
+`define ALU_COMP		3'b100
+`define ALU_OTHER		3'b101
 // alu Opcode
 // `ALU_ADD_SUB
 `define Add 			2'b00
@@ -82,10 +84,15 @@
 `define Sll				2'b00
 `define Srl				2'b01
 `define Sra				2'b11
-`define mfhi_lo			2'b10
 
-`define mfhi			1'b0;
-`define mflo			1'b1;
+// `ALU_OTHER
+`define Mfhi			2'b00
+`define Mflo			2'b01
+`define Lui 			2'b10
+
+// `ALU_COMP
+`define Slt 			2'b00
+`define Sltu 			2'b01
 
 // MIPS opcode
 `define mips_R			6'h0
@@ -103,6 +110,7 @@
 `define mips_ori		6'hd
 `define mips_xori		6'he
 `define mips_lui		6'hf
+
 `define mips_lb			6'h20
 `define mips_lh			6'h21
 `define mips_lw			6'h23

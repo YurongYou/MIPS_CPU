@@ -15,7 +15,7 @@ module EX_MEM (
 	input						MemOrAlu_EX,
 	input						WriteMem_EX,
 	input						ReadMem_EX,
-	input[`ByteSlctWidth-1:0]		byte_slct_EX,
+	input[`OpcodeWidth-1:0]		opcode_EX,
 
 	output[`RegAddrWidth-1:0]	target_MEM,
 	output[`RegDataWidth-1:0]	data_from_ALU_MEM,
@@ -29,7 +29,7 @@ module EX_MEM (
 	output						MemOrAlu_MEM,
 	output						WriteMem_MEM,
 	output						ReadMem_MEM,
-	output[`ByteSlctWidth-1:0]	byte_slct_MEM
+	output[`OpcodeWidth-1:0]	opcode_MEM
 );
 
 	dffe #(.data_width(`RegAddrWidth)) target_holder(clk, rst, is_hold, target_EX, target_MEM);
@@ -44,5 +44,5 @@ module EX_MEM (
 	dffe MemOrAlu_holder(clk, rst, is_hold, MemOrAlu_EX, MemOrAlu_MEM);
 	dffe WriteMem_holder(clk, rst, is_hold, WriteMem_EX, WriteMem_MEM);
 	dffe ReadMem_holder(clk, rst, is_hold, ReadMem_EX, ReadMem_MEM);
-	dffe #(.data_width(`ByteSlctWidth)) byte_slct_holder(clk, rst, is_hold, byte_slct_EX, byte_slct_MEM);
+	dffe #(.data_width(`OpcodeWidth)) opcode_holder(clk, rst, is_hold, opcode_EX, opcode_MEM);
 endmodule

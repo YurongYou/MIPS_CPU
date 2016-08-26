@@ -33,7 +33,7 @@ module pipeline_CPU (
 	input[`InstDataWidth-1:0] 	inst_from_rom,
 	output[`InstAddrWidth-1:0] 	rom_addr,
 	output						rom_ce
-	);
+);
 
 	supply1 					vcc;
 	supply0 					gnd;
@@ -102,19 +102,18 @@ module pipeline_CPU (
 	wire						MemOrAlu_ID;
 	wire						WriteMem_ID;
 	wire 						ReadMem_ID;
-	wire[1:0]					AluType_ID;
-	wire[1:0]					AluOp_ID;
+	wire[`ALUTypeWidth-1:0]		AluType_ID;
+	wire[`ALUOpWidth-1:0]		AluOp_ID;
 	wire						AluSrcA_ID;
 	wire						AluSrcB_ID;
 	wire						RegDes_ID;
 	wire 						ImmSigned_ID;
 	wire 						is_jal_ID;
-	wire 						mfhi_lo_ID;
 	wire[`RegAddrWidth-1:0] 	rt_ID;
 	wire[`RegAddrWidth-1:0] 	rd_ID;
 	wire[`RegDataWidth-1:0]	  	imm_signed_ID;
 	wire[`RegDataWidth-1:0]	  	imm_unsigned_ID;
-	wire[`ByteSlctWidth-1:0]	byte_slct_ID;
+	wire[`OpcodeWidth-1:0]		opcode_ID;
 
 	ID inst_decode(
 		.rst(rst),
@@ -138,9 +137,8 @@ module pipeline_CPU (
 		.imm_signed(imm_signed_ID),
 		.imm_unsigned(imm_unsigned_ID),
 		.shamt(shamt_ID),
-		.byte_slct(byte_slct_ID),
-		.is_jal(is_jal_ID),
-		.mfhi_lo(mfhi_lo_ID)
+		.opcode(opcode_ID),
+		.is_jal(is_jal_ID)
 	);
 
 
@@ -189,19 +187,18 @@ module pipeline_CPU (
 	wire						MemOrAlu_EX;
 	wire						WriteMem_EX;
 	wire 						ReadMem_EX;
-	wire[1:0]					AluType_EX;
-	wire[1:0]					AluOp_EX;
+	wire[`ALUTypeWidth-1:0]		AluType_EX;
+	wire[`ALUOpWidth-1:0]		AluOp_EX;
 	wire						AluSrcA_EX;
 	wire						AluSrcB_EX;
 	wire						RegDes_EX;
 	wire 						ImmSigned_EX;
 	wire 						is_jal_EX;
-	wire 						mfhi_lo_EX;
 	wire[`RegAddrWidth-1:0] 	rt_EX;
 	wire[`RegAddrWidth-1:0] 	rd_EX;
 	wire[`RegDataWidth-1:0]	  	imm_signed_EX;
 	wire[`RegDataWidth-1:0]	  	imm_unsigned_EX;
-	wire[`ByteSlctWidth-1:0]	byte_slct_EX;
+	wire[`OpcodeWidth-1:0]		opcode_EX;
 	wire[`RegDataWidth-1:0]		rdata_1_EX;
 	wire[`RegDataWidth-1:0]		rdata_2_EX;
 	wire[`RegAddrWidth-1:0]		raddr_1_EX;
@@ -237,12 +234,11 @@ module pipeline_CPU (
 		.RegDes_ID(RegDes_ID),
 		.ImmSigned_ID(ImmSigned_ID),
 		.is_jal_ID   (is_jal_ID),
-		.mfhi_lo_ID(mfhi_lo_ID)
 		.rt_ID(rt_ID),
 		.rd_ID(rd_ID),
 		.imm_signed_ID(imm_signed_ID),
 		.imm_unsigned_ID(imm_unsigned_ID),
-		.byte_slct_ID(byte_slct_ID),
+		.opcode_ID(opcode_ID),
 		.hi_ID(hi_data_out_ID),
 		.lo_ID(lo_data_out_ID),
 		.pc_plus4_ID(pc_plus4_ID),
@@ -263,12 +259,11 @@ module pipeline_CPU (
 		.RegDes_EX(RegDes_EX),
 		.ImmSigned_EX(ImmSigned_EX),
 		.is_jal_EX(is_jal_EX),
-		.mfhi_lo_EX(mfhi_lo_EX),
 		.rt_EX(rt_EX),
 		.rd_EX(rd_EX),
 		.imm_signed_EX(imm_signed_EX),
 		.imm_unsigned_EX(imm_unsigned_EX),
-		.byte_slct_EX(byte_slct_EX),
+		.opcode_EX(opcode_EX),
 		.hi_EX(hi_data_to_EX),
 		.lo_EX(lo_data_to_EX),
 		.pc_plus4_EX(pc_plus4_EX)
@@ -299,7 +294,6 @@ module pipeline_CPU (
 		.RegDes_EX(RegDes_EX),
 		.ImmSigned_EX(ImmSigned_EX),
 		.is_jal_EX   (is_jal_EX),
-		.mfhi_lo_EX  (mfhi_lo_EX),
 		.rt_EX(rt_EX),
 		.rd_EX(rd_EX),
 		.imm_signed_EX(imm_signed_EX),
@@ -342,7 +336,7 @@ module pipeline_CPU (
 	wire						MemOrAlu_MEM;
 	wire						WriteMem_MEM;
 	wire						ReadMem_MEM;
-	wire[`ByteSlctWidth-1:0]	byte_slct_MEM;
+	wire[`OpcodeWidth-1:0]		opcode_MEM;
 
 	EX_MEM ex_mem_reg(
 		.clk(clk),
@@ -361,7 +355,7 @@ module pipeline_CPU (
 		.MemOrAlu_EX(MemOrAlu_EX),
 		.WriteMem_EX(WriteMem_EX),
 		.ReadMem_EX(ReadMem_EX),
-		.byte_slct_EX(byte_slct_EX),
+		.opcode_EX(opcode_EX),
 
 		.target_MEM(target_MEM),
 		.data_from_ALU_MEM(data_from_ALU_MEM),
@@ -375,7 +369,7 @@ module pipeline_CPU (
 		.MemOrAlu_MEM(MemOrAlu_MEM),
 		.WriteMem_MEM(WriteMem_MEM),
 		.ReadMem_MEM(ReadMem_MEM),
-		.byte_slct_MEM(byte_slct_MEM)
+		.opcode_MEM(opcode_MEM)
 	);
 
 	wire[`RegDataWidth-1:0]		MEM_data_MEM;
@@ -389,7 +383,8 @@ module pipeline_CPU (
 		.raw_mem_data(data_from_mem),
 		.ReadMem(ReadMem_MEM),
 		.WriteMem(WriteMem_MEM),
-		.byte_slct(byte_slct_MEM),
+		.mem_addr(data_from_ALU_MEM),
+		.opcode(opcode_MEM),
 
 		.data_to_write_mem(data_to_write_mem),
 		.data_to_reg(MEM_data_MEM)

@@ -4,7 +4,7 @@
 //D_flip_flop with holding, update on posedge
 module dffe (clk, rst, hold, data_in, data_out);
 	parameter data_width = 1;
-
+	parameter initial_value = 0;
 	input 						clk;
 	input						rst;
 	input						hold;
@@ -18,6 +18,6 @@ module dffe (clk, rst, hold, data_in, data_out);
 			end
 		end
 		else
-			data_out <= -4;
+			data_out <= initial_value;
 	end
 endmodule

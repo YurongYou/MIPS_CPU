@@ -7,13 +7,36 @@ module MEM (
 	input[`RegDataWidth-1:0]	raw_mem_data,
 	input 						ReadMem,
 	input						WriteMem,
-	input[`ByteSlctWidth-1:0]	byte_slct,
+
+	input[`RegDataWidth-1:0]	mem_addr,
+	input[`OpcodeWidth-1:0]		opcode,
 
 	output[`RegDataWidth-1:0]	data_to_write_mem,
 	output[`RegDataWidth-1:0]	data_to_reg
 );
 
 	wire[`RegDataWidth-1:0]		raw_reg_data;
+	wire[`ByteSlctWidth-1:0]	byte_slct_b;
+	wire[`ByteSlctWidth-1:0]	byte_slct_h;
+
+	assign byte_slct_b = `ByteSlctWidth'b1000 >> mem_addr[1:0];
+	assign byte_slct_h = `ByteSlctWidth'b1100 >> mem_addr[1:0];
+
+	reg[`ByteSlctWidth-1:0]		byte_slct;
+
+	always @(*) begin : proc_byte_slct_gen
+		case (opcode)
+			`mips_lb  : byte_slct <= byte_slct_b;
+			`mips_lh  : byte_slct <= byte_slct_h;
+			`mips_lw  : byte_slct <= `ByteSlctWidth'b1111;
+			`mips_lbu : byte_slct <= byte_slct_b;
+			`mips_lhu : byte_slct <= byte_slct_h;
+			`mips_sb  : byte_slct <= byte_slct_b;
+			`mips_sh  : byte_slct <= byte_slct_h;
+			`mips_sw  : byte_slct <= `ByteSlctWidth'b1111;
+			default : byte_slct <= 0;
+		endcase
+	end
 
 	mux2x1 #(.data_width(`RegDataWidth)) forwardLS(
 		.in_0(reg_data_2),

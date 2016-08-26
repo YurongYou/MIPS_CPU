@@ -1,12 +1,10 @@
-
-`include "define.v"
+// `include "define.v"
 module ALU (
 	input rst,
 	input[`RegDataWidth-1:0] 		srcA,
 	input[`RegDataWidth-1:0] 		srcB,
-	input[1:0] 						AluType,
-	input[1:0] 						AluOp,
-	input							mfhi_lo,
+	input[`ALUTypeWidth-1:0]		AluType,
+	input[`ALUOpWidth-1:0]			AluOp,
 	input[`RegDataWidth-1:0] 		hi_in,
 	input[`RegDataWidth-1:0] 		lo_in,
 
@@ -133,14 +131,42 @@ module ALU (
 						`Srl: data_out <= srcB >> srcA[4:0];
 						`Sra: data_out <= ( {`RegDataWidth{srcB[`RegDataWidth-1]}} << (6'd32 - {1'b0, srcA[4:0]}) )
 						| (srcB >> srcA[4:0]);
-						`mfhi_lo: begin
-							case(mfhi_lo)
-								1'b0: data_out <= hi_in;
-								1'b1: data_out <= lo_in;
-								default: begin
-								end
-							endcase
+						default: begin
 						end
+					endcase
+				end
+				`ALU_COMP: begin
+					case (AluOp)
+						`Slt : begin
+							if (srcA[`RegDataWidth-1] == 1'b1) begin
+								if (srcB[`RegDataWidth-1] == 1'b1) begin
+									data_out <= ((~srcA + 1) < (~srcB + 1)) ? 0 : 1;
+								end
+								else begin
+									data_out <= 1;
+								end
+							end
+							else begin
+								if (srcB[`RegDataWidth-1] == 1'b1) begin
+									data_out <= 0;
+								end
+								else begin
+									data_out <= (srcA < srcB) ? 1 : 0;
+								end
+							end
+						end
+						`Slyu: begin
+							data_out <= (srcA < srcB) ? 1 : 0;
+						end
+						default : begin
+						end
+					endcase
+				end
+				`ALU_OTHER: begin
+					case (AluOp)
+						`Mfhi: data_out <= hi_in;
+						`Mflo: data_out <= lo_in;
+						`Lui : data_out <= srcB << 16;
 						default: begin
 						end
 					endcase
