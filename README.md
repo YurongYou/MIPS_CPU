@@ -17,8 +17,8 @@ Implement a CPU which supports a subset of MIPS operations using Verilog HDL on 
 		* [x] ori
 		* [x] arithmetic operations
 		* [ ] memory store/load
-		* [ ] logic operations
-		* [ ] hi/lo operations
+		* [x] logic operations
+		* [x] hi/lo operations
 		* [ ] dependency test (forwarding)
 		* [ ] jump operations
 		* [ ] overall test
