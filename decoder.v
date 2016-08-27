@@ -12,14 +12,19 @@ module decoder (
 	output reg							AluSrcB,
 	output reg							RegDes,
 	output reg 							ImmSigned,
-	output 								is_jal
+	output reg							is_jal
 );
 	wire[`OpcodeBus]			opcode;
 	wire[`FunctBus]				funct;
 
 	assign opcode 	= inst[`OpcodeBus];
 	assign funct 	= inst[`FunctBus];
-	assign is_jal	= (opcode == `mips_jal) ? 1'b1 : 1'b0;
+
+	always @(*) begin
+		if (opcode == `mips_jal) is_jal <= 1'b1;
+		else is_jal <= 1'b0;
+	end
+	// assign is_jal	= (opcode == `mips_jal) ? 1'b1 : 1'b0;
 
 	always @(*) begin : proc_decode
 		if (rst == ~`RstEnable) begin

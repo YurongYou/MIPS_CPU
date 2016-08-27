@@ -33,11 +33,13 @@ module ForwardControl (
 		if (rst == ~`RstEnable) begin
 			// branch srcA
 			if ((reg_data_1_addr_ID == target_EX) &&
-				(WriteReg_EX == `WriteEnable)) begin
+				(WriteReg_EX == `WriteEnable) &&
+				(target_EX != 0)) begin
 				FW_br_A <= `FW_br_EX_ALU;
 			end
 			else if ((reg_data_1_addr_ID == target_MEM) &&
-					(WriteReg_MEM == `WriteEnable)) begin
+					(WriteReg_MEM == `WriteEnable) &&
+					(target_MEM != 0)) begin
 				case (MemOrAlu_MEM)
 					`ALU : FW_br_A <= `FW_br_MEM_ALU;
 					`Mem : FW_br_A <= `FW_br_MEM_MEM;
@@ -51,11 +53,13 @@ module ForwardControl (
 
 			// branch srcB
 			if ((reg_data_2_addr_ID == target_EX) &&
-				(WriteReg_EX == `WriteEnable)) begin
+				(WriteReg_EX == `WriteEnable) &&
+				(target_EX != 0)) begin
 					FW_br_B <= `FW_br_EX_ALU;
 			end
 			else if ((reg_data_2_addr_ID == target_MEM) &&
-				(WriteReg_MEM == `WriteEnable)) begin
+				(WriteReg_MEM == `WriteEnable) &&
+					(target_MEM != 0)) begin
 				case (MemOrAlu_MEM)
 					`ALU : FW_br_B <= `FW_br_MEM_ALU;
 					`Mem : FW_br_B <= `FW_br_MEM_MEM;
@@ -69,11 +73,13 @@ module ForwardControl (
 
 			// stage EX reg_data_1
 			if ((reg_data_1_addr_EX == target_MEM) &&
-				(WriteReg_MEM == `WriteEnable)) begin
+				(WriteReg_MEM == `WriteEnable) &&
+				(target_MEM != 0)) begin
 				FWA <= `FWMem;
 			end
 			else if ((reg_data_1_addr_EX == target_WB) &&
-				(WriteReg_WB == `WriteEnable)) begin
+				(WriteReg_WB == `WriteEnable) &&
+				(target_WB != 0)) begin
 				FWA <= `FWWB;
 			end
 			else begin
@@ -82,11 +88,13 @@ module ForwardControl (
 
 			// stage EX reg_data_2
 			if ((reg_data_2_addr_EX == target_MEM) &&
-				(WriteReg_MEM == `WriteEnable)) begin
+				(WriteReg_MEM == `WriteEnable) &&
+				(target_MEM != 0)) begin
 				FWB <= `FWMem;
 			end
 			else if ((reg_data_2_addr_EX == target_WB) &&
-				(WriteReg_WB == `WriteEnable)) begin
+				(WriteReg_WB == `WriteEnable) &&
+				(target_WB != 0)) begin
 				FWB <= `FWWB;
 			end
 			else begin
@@ -117,7 +125,8 @@ module ForwardControl (
 
 			// stage MEM SW
 			if ((reg_data_2_addr_MEM == target_WB) &&
-				(WriteReg_WB == `WriteEnable)) begin
+				(WriteReg_WB == `WriteEnable) &&
+				(target_WB != 0)) begin
 				FWLS <= `FW_LS_WB;
 			end
 			else begin
