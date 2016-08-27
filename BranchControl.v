@@ -46,7 +46,7 @@ module BranchControl (
 	wire[`InstAddrWidth-1:0]	jr_addr;
 
 	assign j_addr = {pc_plus4_ID[31:28], inst_ID[`AddrBus], 2'b00};
-	assign cond_addr = pc_plus4_ID + {{16{inst_ID[15]}}, inst_ID[`ImmBus]};
+	assign cond_addr = pc_plus4_ID + {{14{inst_ID[15]}}, inst_ID[`ImmBus], 2'b00};
 	assign jr_addr = opA;
 
 	always @(*) begin : proc_branch

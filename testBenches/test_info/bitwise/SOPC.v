@@ -76,11 +76,11 @@ module SOPC;
 		forever #1 clk = ~clk;
 	end
 	initial begin
-		$dumpfile("test_info/branch/branch.vcd");
+		$dumpfile("test_info/bitwise/bitwise.vcd");
 		$dumpvars;
-		$readmemh("test_info/branch/branch.data", ROM.rom_data, 0, 10);
+		$readmemh("test_info/bitwise/bitwise.data", ROM.rom_data, 0, 10);
 		rst = `RstEnable;
 		#3 rst = ~`RstEnable;
-		#60 $finish;
+		#70 $finish;
 	end
 endmodule

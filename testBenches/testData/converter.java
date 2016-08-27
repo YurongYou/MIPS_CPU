@@ -4,8 +4,8 @@ import java.util.regex.*;
 
 public class converter{
 	public static void main(String[] args) throws IOException {
-        BufferedReader br = new BufferedReader(new FileReader("dependency_in.data"));
-        BufferedWriter wr = new BufferedWriter(new FileWriter("dependency.data"));
+        BufferedReader br = new BufferedReader(new FileReader("branch_in.data"));
+        BufferedWriter wr = new BufferedWriter(new FileWriter("branch.data"));
         String data = br.readLine();
         while (data != null){
             String[] insts = data.split(" ");
