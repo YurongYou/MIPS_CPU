@@ -6,8 +6,8 @@ module RM_ctrl (
 
 	output reg[`RegDataWidth-1:0]	data_to_reg
 );
-	reg[`ByteBus]				read_byte;
-	reg[`ByteBus]				read_half_word;
+	reg[`ByteBus]					read_byte;
+	reg[`HalfWordBus]				read_half_word;
 
 	always @(*) begin : proc_read_byte
 		case (byte_slct)

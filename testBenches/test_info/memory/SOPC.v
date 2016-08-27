@@ -1,3 +1,4 @@
+// place this file in testBench folder
 `timescale 1ns/100ps
 `define DEBUG 1
 `include "../define.v"
