@@ -1,3 +1,4 @@
+// place this file in testBench
 `timescale 1ns/100ps
 `define DEBUG 1
 `include "../define.v"
@@ -76,11 +77,11 @@ module SOPC;
 		forever #1 clk = ~clk;
 	end
 	initial begin
-		$dumpfile("test_info/arithmetic/arithmetic.vcd");
+		$dumpfile("test_info/pipeline_basis/pipeline_basis.vcd");
 		$dumpvars;
-		$readmemh("test_info/arithmetic/arithmetic.data", ROM.rom_data, 0, 20);
+		$readmemh("test_info/pipeline_basis/basis.data", ROM.rom_data, 0, 3);
 		rst = `RstEnable;
 		#3 rst = ~`RstEnable;
-		#50 $finish;
+		#30 $finish;
 	end
 endmodule

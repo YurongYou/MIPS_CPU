@@ -52,10 +52,17 @@ module BranchControl (
 	always @(*) begin : proc_branch
 		if (rst == ~`RstEnable) begin
 			case (inst_ID[`OpcodeBus])
-				`mips_jr: begin
-					branch_address <= jr_addr;
-					is_branch <= `BranchEnable;
-					is_rst_IF_ID <= `RstEnable;
+				`mips_R: begin
+					if (inst_ID[`FunctBus] == `mips_jr) begin
+						branch_address <= jr_addr;
+						is_branch <= `BranchEnable;
+						is_rst_IF_ID <= `RstEnable;
+					end
+					else begin
+						branch_address <= `ZeroWord;
+						is_branch <= ~`BranchEnable;
+						is_rst_IF_ID <= ~`RstEnable;
+					end
 				end
 				`mips_j: begin
 					branch_address <= j_addr;

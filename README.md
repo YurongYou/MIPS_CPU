@@ -2,8 +2,8 @@
 Implement a CPU which supports a subset of MIPS operations using Verilog HDL on FPGA Xilinx Basys 3
 
 ## TODOs
-1. finish construction
-	
+1. [x] finish construction
+
 	* [x] `decoder.v`
 	* [x]  `BranchControl.v`
 	* [x]  `HazardControl.v`
@@ -24,5 +24,12 @@ Implement a CPU which supports a subset of MIPS operations using Verilog HDL on 
 		* [ ] overall test
 4. improvement
 	* add cache
+	* implememt CP0
 5. synthesis
+6. write report
+	* clearly outline the supported instructions
+
+## Supported  Instructions
+
+
 

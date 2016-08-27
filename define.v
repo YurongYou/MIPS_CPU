@@ -100,7 +100,7 @@
 // MIPS opcode
 `define mips_R			6'h0
 
-`define mips_jr 		6'd8
+
 `define mips_j			6'h2
 `define mips_jal		6'h3
 `define mips_beq		6'h4
@@ -124,6 +124,8 @@
 `define mips_sw			6'h2b
 
 // MIPS funct
+`define mips_jr 		6'd8
+
 `define mips_sll 		6'd0
 `define mips_srl 		6'd2
 `define mips_sra 		6'd3

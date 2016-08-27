@@ -17,20 +17,20 @@ module rom_tb;
 	initial begin : rom_test
 		$dumpfile("vcd/rom_tb.vcd");
 		$dumpvars;
-		$readmemh("testData/basis.data", test_rom.rom_data, 0, 3);
+		$readmemh("testData/arithmetic.data", test_rom.rom_data, 0, 20);
 		$display("time\taddr\tinst");
 		rst = ~`RstEnable;
 
-		for (i = 0; i < 32; i = i + 1) begin
+		for (i = 0; i < 21; i = i + 1) begin
 			#1 ce = `ChipEnable;
 			addr = i << 2;
-			#1 $display("%2d\t%d\t%32b", $time, addr, data);
+			#1 $display("%2d\t%d\t%h", $time, addr, data);
 			ce = ~`ChipEnable;
 		end
 		rst = `RstEnable;
 		#1 $display("==============================================================");
 		rst = ~`RstEnable;
-		for (i = 0; i < 32; i = i + 1) begin
+		for (i = 0; i < 21; i = i + 1) begin
 			#1 ce = `ChipEnable;
 			addr = i << 2;
 			#1 $display("%2d\t%d\t%32b", $time, addr, data);
