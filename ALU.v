@@ -29,7 +29,6 @@ module ALU (
 	assign multu_temp = (srcA[`RegDataWidth-1] ^ srcB[`RegDataWidth-1]) ? (~positive_mult_temp + 1) : positive_mult_temp;
 	assign positive_div_temp = positive_srcA / positive_srcB;
 	assign positive_quo_temp = positive_srcA % positive_srcB;
-	assign divu_temp = (srcA[`RegDataWidth-1] ^ srcB[`RegDataWidth-1]) ? (~positive_div_temp + 1) : positive_div_temp;
 
 	always @(*) begin : proc_alu
 		if(rst == ~`RstEnable) begin
@@ -97,7 +96,7 @@ module ALU (
 								hi_out <= ~positive_quo_temp + 1;
 						end
 						`Divu: begin
-							lo_out <= divu_temp;
+							lo_out <= srcA / srcB;
 							hi_out <= srcA % srcB;
 						end
 						default: begin

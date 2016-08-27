@@ -76,11 +76,11 @@ module SOPC;
 		forever #1 clk = ~clk;
 	end
 	initial begin
-		$dumpfile("test_info/arithmetic/arithmetic.vcd");
+		$dumpfile("test_info/arithmetic/arithmetic_div.vcd");
 		$dumpvars;
-		$readmemh("test_info/arithmetic/arithmetic.data", ROM.rom_data, 0, 19);
+		$readmemh("test_info/arithmetic/arithmetic_div.data", ROM.rom_data, 0, 8);
 		rst = `RstEnable;
 		#3 rst = ~`RstEnable;
-		#50 $finish;
+		#70 $finish;
 	end
 endmodule

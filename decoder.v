@@ -129,7 +129,7 @@ module decoder (
 							MemOrAlu	= `ALU;
 							ReadMem  	= ~`ReadEnable;
 							AluType		= `ALU_OTHER;
-							AluOp		= `Mfhi;
+							AluOp		= `Mflo;
 							RegDes		= `Rd;
 						end
 						`mips_mult: begin

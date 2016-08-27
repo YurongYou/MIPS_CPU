@@ -15,7 +15,7 @@ Implement a CPU which supports a subset of MIPS operations using Verilog HDL on 
 	* [x] write virtual memory, rom
 	* test on instrctions
 		* [x] ori
-		* [ ] arithmetic operations
+		* [x] arithmetic operations
 		* [ ] memory store/load
 		* [ ] logic operations
 		* [ ] hi/lo operations
@@ -28,8 +28,4 @@ Implement a CPU which supports a subset of MIPS operations using Verilog HDL on 
 5. synthesis
 6. write report
 	* clearly outline the supported instructions
-
-## Supported  Instructions
-
-
 
