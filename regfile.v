@@ -113,7 +113,7 @@ module regfile(
 	end
 
 	// read port1
-	always @(re1, rst, raddr_1) begin : proc_read1
+	always @(*) begin : proc_read1
 		if (re1 == `ReadEnable && rst == ~`RstEnable)
 			rdata_1 <= regs[raddr_1];
 		else
@@ -121,7 +121,7 @@ module regfile(
 	end
 
 	// read port2
-	always @(re2, rst, raddr_2) begin : proc_read2
+	always @(*) begin : proc_read2
 		if (re2 == `ReadEnable && rst == ~`RstEnable)
 			rdata_2 <= regs[raddr_2];
 		else

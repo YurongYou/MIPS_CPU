@@ -78,7 +78,7 @@ module SOPC;
 	initial begin
 		$dumpfile("test_info/arithmetic/arithmetic.vcd");
 		$dumpvars;
-		$readmemh("test_info/arithmetic/arithmetic.data", ROM.rom_data, 0, 20);
+		$readmemh("test_info/arithmetic/arithmetic.data", ROM.rom_data, 0, 19);
 		rst = `RstEnable;
 		#3 rst = ~`RstEnable;
 		#50 $finish;
