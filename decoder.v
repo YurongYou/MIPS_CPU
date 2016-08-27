@@ -376,7 +376,7 @@ module decoder (
 				`mips_lui: begin
 					WriteReg 	= `WriteEnable;
 					WriteMem 	= ~`WriteEnable;
-					MemOrAlu	= `Mem;
+					MemOrAlu	= `ALU;
 					ReadMem  	= ~`ReadEnable;
 					AluType		= `ALU_OTHER;
 					AluOp		= `Lui;

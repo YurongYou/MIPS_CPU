@@ -1,6 +1,7 @@
 *.vvp
 *.vcd
 *.key
+*.class
 
 iverilog_compiled
 utilities/iverilog_compiled

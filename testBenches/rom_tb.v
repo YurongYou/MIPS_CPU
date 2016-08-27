@@ -17,7 +17,7 @@ module rom_tb;
 	initial begin : rom_test
 		$dumpfile("vcd/rom_tb.vcd");
 		$dumpvars;
-		$readmemh("testData/arithmetic.data", test_rom.rom_data, 0, 20);
+		$readmemh("testData/test_out.data", test_rom.rom_data, 0, 16);
 		$display("time\taddr\tinst");
 		rst = ~`RstEnable;
 

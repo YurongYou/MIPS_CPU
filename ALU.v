@@ -135,22 +135,26 @@ module ALU (
 					we_lo <= ~`WriteEnable;
 					case (AluOp)
 						`Slt : begin
-							if (srcA[`RegDataWidth-1] == 1'b1) begin
-								if (srcB[`RegDataWidth-1] == 1'b1) begin
-									data_out <= ((~srcA + 1) < (~srcB + 1)) ? 0 : 1;
-								end
-								else begin
-									data_out <= 1;
-								end
+							if (srcA[`RegDataWidth-1] ^ srcB[`RegDataWidth-1]) begin
+								data_out <= (srcA[`RegDataWidth-1] == 1'b1) ? 1 : 0;
 							end
-							else begin
-								if (srcB[`RegDataWidth-1] == 1'b1) begin
-									data_out <= 0;
-								end
-								else begin
-									data_out <= (srcA < srcB) ? 1 : 0;
-								end
-							end
+							else data_out <= (srcA < srcB) ? 1 : 0;
+							// if (srcA[`RegDataWidth-1] == 1'b1) begin
+							// 	if (srcB[`RegDataWidth-1] == 1'b1) begin
+							// 		data_out <= ((~srcA + 1) < (~srcB + 1)) ? 0 : 1;
+							// 	end
+							// 	else begin
+							// 		data_out <= 1;
+							// 	end
+							// end
+							// else begin
+							// 	if (srcB[`RegDataWidth-1] == 1'b1) begin
+							// 		data_out <= 0;
+							// 	end
+							// 	else begin
+							// 		data_out <= (srcA < srcB) ? 1 : 0;
+							// 	end
+							// end
 						end
 						`Sltu: begin
 							data_out <= (srcA < srcB) ? 1 : 0;
