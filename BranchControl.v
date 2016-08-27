@@ -1,4 +1,4 @@
-`include "define.v"
+// `include "define.v"
 module BranchControl (
 	input							rst,
 

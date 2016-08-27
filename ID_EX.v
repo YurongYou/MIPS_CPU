@@ -67,7 +67,7 @@ module ID_EX(
 	dffe #(.data_width(`RegAddrWidth)) 	raddr_2_holder		(clk, rst, is_hold, raddr_2_ID, raddr_2_EX);
 
 	dffe #(.data_width(`RegDataWidth)) 	shamt_holder		(clk, rst, is_hold, shamt_ID, shamt_EX);
-	dffe 								WriteReg_holder		(clk, rst, is_hold, WriteMem_ID, WriteMem_EX);
+	dffe 								WriteReg_holder		(clk, rst, is_hold, WriteReg_ID, WriteReg_EX);
 	dffe 								MemOrAlu_holder		(clk, rst, is_hold, MemOrAlu_ID, MemOrAlu_EX);
 	dffe 								WriteMem_holder		(clk, rst, is_hold, WriteMem_ID, WriteMem_EX);
 	dffe 								ReadMem_holder		(clk, rst, is_hold, ReadMem_ID, ReadMem_EX);
@@ -82,7 +82,7 @@ module ID_EX(
 	dffe #(.data_width(`RegAddrWidth)) 	rd_holder			(clk, rst, is_hold, rd_ID, rd_EX);
 	dffe #(.data_width(`RegDataWidth)) 	imm_signed_holder	(clk, rst, is_hold, imm_signed_ID, imm_signed_EX);
 	dffe #(.data_width(`RegDataWidth)) 	imm_unsigned_holder	(clk, rst, is_hold, imm_unsigned_ID, imm_unsigned_EX);
-	dffe #(.data_width(`OpcodeWidth)) 	opcode_holder	(clk, rst, is_hold, opcode_ID, opcode_EX);
+	dffe #(.data_width(`OpcodeWidth)) 	opcode_holder		(clk, rst, is_hold, opcode_ID, opcode_EX);
 	dffe #(.data_width(`RegDataWidth)) 	hi_holder			(clk, rst, is_hold, hi_ID, hi_EX);
 	dffe #(.data_width(`RegDataWidth)) 	lo_holder			(clk, rst, is_hold, lo_ID, lo_EX);
 	dffe #(.data_width(`InstAddrWidth)) pc_plus4_holder		(clk, rst, is_hold, pc_plus4_ID, pc_plus4_EX);

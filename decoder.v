@@ -274,6 +274,9 @@ module decoder (
 							RegDes		= `Rd;
 						end
 						default: begin
+							WriteReg	= ~`WriteEnable;
+							WriteMem	= ~`WriteEnable;
+							ReadMem		= ~`ReadEnable;
 						end
 					endcase // funct
 				end
@@ -467,6 +470,9 @@ module decoder (
 					ImmSigned	= `ImmSign;
 				end
 				default: begin
+					WriteReg	= ~`WriteEnable;
+					WriteMem	= ~`WriteEnable;
+					ReadMem		= ~`ReadEnable;
 				end
 			endcase // opcode
 		end

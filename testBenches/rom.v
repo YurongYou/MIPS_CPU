@@ -1,8 +1,8 @@
 // `include "../define.v"
 module rom (
-	input						rst,
-	input 						ce,
-	input[`InstAddrWidth-1:0]	addr,
+	input							rst,
+	input 							ce,
+	input[`InstAddrWidth-1:0]		addr,
 
 	output reg[`InstDataWidth-1:0]	inst
 );
