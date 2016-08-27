@@ -489,6 +489,7 @@ module pipeline_CPU (
 	HazardControl hazard_handler(
 		.rst(rst),
 		.ReadMem_EX(ReadMem_EX),
+		.WriteMem_ID(WriteMem_ID),
 		.raddr_1_ID(raddr_1_ID),
 		.raddr_2_ID(raddr_2_ID),
 		.target_EX(target_EX),
