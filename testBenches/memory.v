@@ -10,30 +10,22 @@ module memory (
 	`ifdef DEBUG
 	output reg[`MemDataWidth-1:0]	data_o,
 
-	output[`MemDataWidth-1:0]		mem0,
-	output[`MemDataWidth-1:0]		mem1,
-	output[`MemDataWidth-1:0]		mem2,
-	output[`MemDataWidth-1:0]		mem3,
-	output[`MemDataWidth-1:0]		mem4,
-	output[`MemDataWidth-1:0]		mem5,
-	output[`MemDataWidth-1:0]		mem6,
-	output[`MemDataWidth-1:0]		mem7,
-	output[`MemDataWidth-1:0]		mem8
+	output[`MemDataWidth-1:0]		mem20,
+	output[`MemDataWidth-1:0]		mem21,
+	output[`MemDataWidth-1:0]		mem22,
+	output[`MemDataWidth-1:0]		mem23,
+	output[`MemDataWidth-1:0]		mem24
 	`endif
 	`ifndef DEBUG
 	output reg[`MemDataWidth-1:0]	data_o
 	`endif
 );
 	`ifdef DEBUG
-	assign mem0 = mem_data[0];
-	assign mem1 = mem_data[1];
-	assign mem2 = mem_data[2];
-	assign mem3 = mem_data[3];
-	assign mem4 = mem_data[4];
-	assign mem5 = mem_data[5];
-	assign mem6 = mem_data[6];
-	assign mem7 = mem_data[7];
-	assign mem8 = mem_data[8];
+	assign mem20 = mem_data[20];
+	assign mem21 = mem_data[21];
+	assign mem22 = mem_data[22];
+	assign mem23 = mem_data[23];
+	assign mem24 = mem_data[24];
 	`endif
 	parameter					MemoryDataNum = 2048;
 	reg[`MemDataWidth-1:0]		mem_data[MemoryDataNum-1:0];

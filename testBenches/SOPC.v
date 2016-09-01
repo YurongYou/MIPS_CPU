@@ -55,7 +55,7 @@ module SOPC;
 		.rom_ce(rom_ce)
 	);
 
-	rom #(.InstMemNum(32)) ROM(
+	rom ROM(
 		.rst(gnd),
 		.ce(rom_ce),
 		.addr(rom_addr),
@@ -63,7 +63,7 @@ module SOPC;
 	);
 
 	memory RAM(
-		.rst(rst),
+		.rst(gnd),
 		.ce(mem_re),
 		.data_i(data_to_write_mem),
 		.addr_i(mem_addr),
@@ -76,11 +76,12 @@ module SOPC;
 		forever #1 clk = ~clk;
 	end
 	initial begin
-		$dumpfile("test_info/branch/branch.vcd");
+		$dumpfile("test_info/yamin/yamin.vcd");
 		$dumpvars;
-		$readmemh("test_info/branch/branch.data", ROM.rom_data, 0, 10);
+		$readmemh("test_info/yamin/yamin.data", ROM.rom_data, 0, 25);
+		$readmemh("test_info/yamin/ram.data", RAM.mem_data);
 		rst = `RstEnable;
 		#3 rst = ~`RstEnable;
-		#60 $finish;
+		#200 $finish;
 	end
 endmodule

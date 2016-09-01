@@ -21,9 +21,9 @@ module rom_tb;
 
 	reg[5:0] i;
 	initial begin : memory_test
-		$dumpfile("vcd/memory_tb.vcd");
+		$dumpfile("test_info/yamin/ram_test.vcd");
 		$dumpvars;
-		$readmemb("testData/data.data", test_momory.mem_data);
+		$readmemh("test_info/yamin/ram.data", test_momory.mem_data);
 		$display("time\taddr\tinst");
 		rst = ~`RstEnable;
 

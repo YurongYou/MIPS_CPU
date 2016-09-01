@@ -475,7 +475,7 @@ module pipeline_CPU (
 		.inst_ID(inst_ID),
 
 		.FW_br_A(FW_br_A),
-		.FW_br_B(FW_br_A),
+		.FW_br_B(FW_br_B),
 		.rdata_1_ID(rdata_1_ID),
 		.rdata_2_ID(rdata_2_ID),
 		.data_out_EX(data_out_EX),
