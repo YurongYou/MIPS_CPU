@@ -1,0 +1,205 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Short Sectioned Assignment
+% LaTeX Template
+% Version 1.0 (5/5/12)
+%
+% This template has been downloaded from:
+% http://www.LaTeXTemplates.com
+%
+% Original author:
+% Frits Wenneker (http://www.howtotex.com)
+%
+% License:
+% CC BY-NC-SA 3.0 (http://creativecommons.org/licenses/by-nc-sa/3.0/)
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%----------------------------------------------------------------------------------------
+%	PACKAGES AND OTHER DOCUMENT CONFIGURATIONS
+%----------------------------------------------------------------------------------------
+
+\documentclass[paper=a4, fontsize=11pt]{scrartcl} % A4 paper and 11pt font size
+\usepackage{xeCJK}
+\usepackage{fourier} % Use the Adobe Utopia font for the document - comment this line to return to the LaTeX default
+\usepackage[T1]{fontenc} % Use 8-bit encoding that has 256 glyphs
+\usepackage[english]{babel} % English language/hyphenation
+\usepackage{amsmath,amsfonts,amsthm} % Math packages
+\usepackage{titlesec}
+\usepackage{titletoc}
+\usepackage{abstract}
+\usepackage[toc,page,title,titletoc,header]{appendix}
+\usepackage{lipsum} % Used for inserting dummy 'Lorem ipsum' text into the template
+
+\usepackage{sectsty} % Allows customizing section commands
+\allsectionsfont{\normalfont\scshape} % Make all sections centered, the default font and small caps
+
+\usepackage{fancyhdr} % Custom headers and footers
+\pagestyle{fancyplain} % Makes all pages in the document conform to the custom headers and footers
+\fancyhead{} % No page header - if you want one, create it in the same way as the footers below
+\fancyfoot[L]{} % Empty left footer
+\fancyfoot[C]{} % Empty center footer
+\fancyfoot[R]{\thepage} % Page numbering for right footer
+\renewcommand{\headrulewidth}{0pt} % Remove header underlines
+\renewcommand{\footrulewidth}{0pt} % Remove footer underlines
+\setlength{\headheight}{13.6pt} % Customize the height of the header
+
+\numberwithin{equation}{section} % Number equations within sections (i.e. 1.1, 1.2, 2.1, 2.2 instead of 1, 2, 3, 4)
+\numberwithin{figure}{section} % Number figures within sections (i.e. 1.1, 1.2, 2.1, 2.2 instead of 1, 2, 3, 4)
+\numberwithin{table}{section} % Number tables within sections (i.e. 1.1, 1.2, 2.1, 2.2 instead of 1, 2, 3, 4)
+
+\setlength\parindent{0pt} % Removes all indentation from paragraphs - comment this line for an assignment with lots of text
+\bibliographystyle{plain}
+
+\usepackage[colorlinks,linkcolor=black,anchorcolor=blue,citecolor=green, urlcolor = blue]{hyperref} % Using hyper reference
+\usepackage{multirow}
+\usepackage{geometry}
+\usepackage{setspace}
+
+%-------------------------------------------------------------------
+%	CONTENT SECTION
+%-------------------------------------------------------------------
+\usepackage[nottoc]{tocbibind}
+%\titlecontents{section}
+%	[0 em]
+%	{\filcenter\large\scshape}
+%	{}
+%	{}
+%	{\titlerule*[1em]{$\cdot$}\contentspage}
+%
+
+%-------------------------------------------------------------------
+%	TITLE SECTION
+%-------------------------------------------------------------------
+\newcommand{\horrule}[1]{\rule{\linewidth}{#1}} % Create horizontal rule command with 1 argument of height
+
+\title{	
+\normalfont \normalsize 
+\textsc{Zhiyuan College, Shanghai Jiao Tong University} \\ % Your university, school and/or department name(s)
+\horrule{0.5pt} \\[0.4cm] % Thin top horizontal rule
+\huge Five-Stage MIPS Pipeline in Verilog HDL \\ % The assignment title
+\horrule{2pt} \\ % Thick bottom horizontal rule
+}
+
+\author{
+\normalsize
+	Yurong You (ID: 5140519064)\\
+\normalsize
+	ACM Honored Class
+} % Your name
+
+\date{\normalsize\today} % Today's date or a custom date
+
+\begin{document}
+\maketitle % Print the title
+\begin{spacing}{1.5}
+\renewcommand{\abstractname}{\scshape \bfseries \large Abstract}
+\begin{abstract}
+	This report is a detailed summary on the five-stage MIPS pipeline project I have finish in this summer. The design is elaborated on both the whole and the part in this report. The pipeline supports all MIPS standard integer instructions except those related to coprocessors, and the forwarding, hazard control and branch control techniques are all fully implemented. The pipeline not only passes the basic Yamin Li's experiment code, but passes the all self-designed test cases which are intended to test the pipeline's completeness on supporting every part of the MIPS integer instruction set. Source code in Verilog HDL and the pipeline blueprint are all provided.
+\end{abstract}
+\newpage
+\renewcommand{\contentsname}{\scshape \bfseries \Large Contents}
+\tableofcontents
+
+\newpage
+\section{Introduction and Design Philosophy}
+	This report is for the final project of course MS108, computer system I. In this project, I implemented a comprehensive MIPS classical five-stage pipeline which supports all but two (coprocessor instructions) MIPS standard integer instructions\footnote{\url{https://en.wikipedia.org/wiki/MIPS_instruction_set}}. A summary on the supported instruction set are presented in appendix \ref{app::inst}.
+	
+	On designing the structure of pipeline, I take \cite{lsl} and \cite{lym} as reference, but I found that different functional units in Lei's design are coupling with each other, which will lead to inconvenience if we are to extend the functionality of our pipeline, and a large part of Li's design are low-level implementations on function units, which I think might be unnecessary. Thus I decided to design a pipeline for myself, following principles as follows,
+	
+	\begin{spacing}{1.0}
+	\begin{enumerate}
+		\item apply Register-transfer level (RTL) modelling;
+		\item separate different stages;
+		\item separate control-path and data-path.
+	\end{enumerate}
+	\end{spacing}
+	
+	The blueprint of my design is presented in appendix \ref{app::blueprint}, note that due to the limited space, I do not circle what stage module consist what modules.
+	
+	The branch control, hazard control and forwarding are inspired by \cite{COD}. Different functional units are implemented in different modules, the main part of which will be introduced in the next section. The modules are connected by \verb|pipeline.v| to compose the whole pipeline.
+	
+	Source code is available on \url{https://github.com/YurongYou/MIPS_CPU}.
+	
+\section{Main Modules Elaboration}
+    \subsection{Stage Modules}
+    	There are five stages in this five-stage MIPS pipeline.
+    	\subsubsection{Instruction Fetch} Implemented in \verb|IF.v|. The main function of this module is to generate \verb|PC|, the address of current instruction, which will be sent to instruction memory (\verb|ROM|) in \verb|pipeline.v| to access instruction. This module consists of merely a D-type flip-flop with enable port to store the address. It takes control signals and branch address from hazard control module and branch control module to implement those control.
+    	\subsubsection{Instruction Decode} Implemented in \verb|ID.v|. This module is mainly a decoder, which takes instruction from IF module as the input and outputs several control signals. Those signals are
+    		\begin{table}[!htb]
+				\centering
+				\begin{tabular}{|l|l|}
+				\hline
+				\multicolumn{1}{|c|}{Signal} & \multicolumn{1}{c|}{Meaning}                                    \\ \hline
+				WriteReg                     & whether or not is to write register                             \\ \hline
+				MemOrAlu                     & the source to write register is from memory or ALU              \\ \hline
+				WriteMem                     & whether or not is to write memory                               \\ \hline
+				ReadMem                      & whether or not is to read register                              \\ \hline
+				AluType                      & the type of computation to perform in ALU in execution stage    \\ \hline
+				AluOp                        & the subtype of computation to perform in ALU in execution stage \\ \hline
+				AluSrcA                      & the first source of ALU is (rs or shamt)                        \\ \hline
+				AluSrcB                      & the second source of ALU is (immediate or rt)                   \\ \hline
+				RegDes                       & which register is to be write                                   \\ \hline
+				ImmSigned                    & use signed or unsigned extended immediate                       \\ \hline
+				is\_jal                      & whether or not this instruction is a jal instruction            \\ \hline
+				\end{tabular}
+				\caption{A Summary on the decoder's output signals}
+			\end{table}
+			
+			Note that the ``MemOrAlu'' signal is indeed redundant (can be inferred from ``WriteReg''); and the reason why there should be a ``is\_jal'' signal is that this instruction is asking to put $\mathrm{PC}+4$ into the $31$th register and jump to a specific instruction address, which is too special to be integrated effortlessly with other instructions in my implementation. These signal will go all the way down to the following stage to control the pipeline. 
+			
+			This module also output several (signed/unsigned extended) segmentations on the instruction such as shamt, imm, etc.
+    	\subsubsection{Execution} Implemented in \verb|EX.v|. This module implements the forwarding on the source of ALU and performs the computation specified by ``AluType'' and ``AluOp'' in ALU. The forwarding is performed according to the signals sent by the forwarding module.
+    	\subsubsection{Memory Access} Implemented in \verb|MEM.v|. Memory access follows the standard of Wishbone Bus  \footnote{\url{https://en.wikipedia.org/wiki/Wishbone_(computer_bus)}}, which has a brief usage guide on page 257 of book \cite{lsl}. I use a write memory controller and a read memory control to modify the data in order to get the desired form.
+    	\subsubsection{Write Back} Not implemented as a single module, since there is just one switch on the source of data, from the ALU or the memory, to write back into the register file.
+
+    \subsection{Stage Sandwich Modules}
+    	Also call ``pipeline registers'', but I prefer this name. These modules are merely collections of D-type flip-flops, which can update data on the rising edge of clock. See source code \verb|if_id.v|, \verb|id_ex.v| and \verb|ex_mem.v|.
+    \subsection{Control Modules}
+    	\subsubsection{Forwarding}
+	    	 Forwarding unit takes signals from various stages and output the forwarding control signals. There are 6 kinds of forwarding, and the control logic is presented as follows,
+	    	 \begin{enumerate}
+	    	 	\item Forward Alu result in MEM stage to EX stage
+	    	 	\item Forward Alu result in WB stage to EX stage
+	    	 	\item Forward Mem result in WB stage to MEM stage
+	    	 	\item Forward Alu result in WB stage to EX stage
+	    	 	\item Forward Alu result in EX stage to ID stage
+	    	 	\item Forward Alu result in Mem stage to ID stage
+	    	 \end{enumerate}
+    	\subsubsection{Hazard Control}
+    	\subsubsection{Branch Control}
+    \subsection{Register File}
+\section{Test Summary}
+\section{Further Enhancement}
+	\begin{enumerate}
+		\item Out of order execution
+		\item Cache
+		\item Exception and interrupt
+		\item Synthesis on FPGA
+	\end{enumerate}
+\newpage
+\nocite{*}
+\bibliography{cpu}
+
+\newpage
+\renewcommand{\appendixpagename}{\scshape \Large \mdseries \rmfamily Appendices}
+	\newgeometry{bottom = 1.3 cm }
+\begin{appendices}
+    \renewcommand{\thesection}{\Alph{section}}
+    
+    \section{Instruction Summary}
+    	\label{app::inst}
+    	\begin{table}[!htb]
+    		\centering
+    		\includegraphics[width = 14cm]{Instructions}
+    		\caption{A summary on supported MIPS instructions}
+    	\end{table}
+    \newpage
+    \section{Pipeline Blueprint}
+    	\label{app::blueprint}
+	    \begin{figure}[!htb]
+	    	\centering
+	    	\includegraphics[angle=90,origin=c, width = 15cm]{blueprint}	    	
+	    \end{figure}
+\end{appendices}
+\end{spacing}
+\end{document}
