@@ -1,0 +1,26 @@
+\begin{thebibliography}{1}
+
+\bibitem{CAAQA}
+J.L. Hennessy, D.A. Patterson, and K.~Asanovi{\'c}.
+\newblock {\em Computer Architecture: A Quantitative Approach}.
+\newblock Computer Architecture: A Quantitative Approach. Morgan
+  Kaufmann/Elsevier, 2012.
+
+\bibitem{lym}
+Yamin Li.
+\newblock {\em Computer Principles and Design in Verilog HDL}.
+\newblock Tsinghua University Press, 2011.
+
+\bibitem{COD}
+D.A. Patterson and J.L. Hennessy.
+\newblock {\em Computer Organization and Design: The Hardware/Software
+  Interface}.
+\newblock The Morgan Kaufmann Series in Computer Architecture and Design.
+  Elsevier Science, 2013.
+
+\bibitem{lsl}
+雷思磊.
+\newblock {\em 自己动手写CPU}.
+\newblock 电子工业出版社, 2014.
+
+\end{thebibliography}

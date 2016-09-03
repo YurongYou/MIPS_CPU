@@ -8,3 +8,4 @@ utilities/iverilog_compiled
 utilities/vcd
 testBenches/iverilog_compiled
 testBenches/vcd
+doc/.texpadtemp
