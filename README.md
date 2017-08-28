@@ -1,16 +1,21 @@
 # MIPS_CPU
-Implement a CPU which supports a subset of MIPS operations using Verilog HDL on FPGA Xilinx Basys 3
+Implement a CPU which supports a subset of MIPS operations using Verilog HDL
 
-## TODOs
-1. [x] finish construction
+<p align="center">
+	<img src ="doc/blueprint.png" width="900" />
+</p>
 
+The pipeline supports all MIPS standard integer instructions except those related to coprocessors, and the forwarding, hazard control and branch control techniques are all fully implemented. Project report is available [here](./doc/Five-Stage%20MIPS%20Pipeline%20in%20Verilog%20HDL.pdf).
+
+## Status
+1. finish construction
 	* [x] `decoder.v`
 	* [x]  `BranchControl.v`
 	* [x]  `HazardControl.v`
 	* [x]  `RM_ctrl.v`
 	* [x]  `WM_ctrl.v`
 	* [x]  solve div function
-2. [x] fully review the pipeline code
+2. fully review the pipeline code
 3. test
 	* [x] write virtual memory, rom
 	* test on instrctions
@@ -22,11 +27,10 @@ Implement a CPU which supports a subset of MIPS operations using Verilog HDL on 
 		* [x] hi/lo operations
 		* [x] dependency test (forwarding)
 		* [x] jump operations
-		* [ ] overall test
-4. improvement
+		* [x] overall test
+4. optional improvement
 	* add cache
-	* implememt CP0
-5. synthesis
-6. write report
+	* implement CP0
+5. report
 	* clearly outline the supported instructions
 
